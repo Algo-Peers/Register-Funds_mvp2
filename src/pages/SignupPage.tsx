@@ -10,7 +10,7 @@ const SignupPage: React.FC = () => {
     <div className="min-h-screen bg-[#020E05]">
       {/* Header */}
       <motion.header 
-        className="text-white sticky py-4 px-6 top-0 z-50"
+        className="text-white sticky p-10 top-0 z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}

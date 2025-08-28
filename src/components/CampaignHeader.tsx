@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, Bell } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface CampaignHeaderProps {
   title?: string;
@@ -13,14 +14,22 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
 }) => {
   return (
     <motion.header
-      className={`bg-gray-900 text-white px-6 py-4 border-b border-gray-700 ${className}`}
+      className={`bg-[#020E05] text-white px-6 py-4 ${className}`}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <div className="flex items-center justify-between">
-        {/* Title */}
-        <div>
+        {/* Logo and Title */}
+        <div className="flex items-center space-x-6">
+          <Link to="/">
+            <div className="flex items-center space-x-2">
+              <span className="text-white font-bold text-xl">Register</span>
+              <span className="bg-green-400 text-green-900 px-2 py-1 rounded text-sm font-medium">
+                FUNDS
+              </span>
+            </div>
+          </Link>
           <h1 className="text-2xl font-bold text-white">{title}</h1>
         </div>
 
@@ -34,13 +43,13 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
             <input
               type="text"
               placeholder="Search"
-              className="bg-gray-800 border border-gray-600 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent w-64"
+              className="bg-[#111C14] border border-gray-700 rounded-full pl-10 pr-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent w-64"
             />
           </div>
 
           {/* Notifications */}
           <motion.button
-            className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-lg bg-[#111C14] transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -53,7 +62,7 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
               <span className="text-white font-semibold text-sm">J</span>
             </div>
           </motion.div>

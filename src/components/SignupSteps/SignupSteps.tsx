@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import type { FormData } from './types';
 import AuthHeader from "../AuthHeader"
 import Step1 from './Step1';
@@ -13,6 +14,7 @@ import Step7 from './Step7';
 import Step8 from './Step8';
 
 const SignupSteps: React.FC = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     schoolName: '',
@@ -92,11 +94,11 @@ const SignupSteps: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#020E05]">
-      <AuthHeader type="signup" />
+      <div className="p-10"><AuthHeader type="signup" /></div>
 
       <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
         {/* Left Side - Form */}
-        <div className="lg:w-1/2 p-8 lg:p-16 flex flex-col">
+        <div className="lg:w-1/2 p-8 lg:px-16 flex flex-col">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex items-center justify-end mb-2">
@@ -145,8 +147,11 @@ const SignupSteps: React.FC = () => {
             
             <div className="flex flex-col items-end space-y-2">
               <motion.button
-                onClick={currentStep === totalSteps ? () => console.log('Submit form') : nextStep}
-                className="bg-green-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-green-500 transition-all duration-200 flex items-center space-x-2"
+                onClick={currentStep === totalSteps ? () => {
+                  console.log('Submit form');
+                  navigate('/overview');
+                } : nextStep}
+                className="bg-[#13391D] text-white px-6 py-3 rounded-full font-semibold flex items-center space-x-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

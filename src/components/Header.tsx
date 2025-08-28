@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Header: React.FC = () => {
   return (
     <motion.header 
-      className="text-white py-4 px-6 top-0 z-50"
+      className="text-white opacity-100 py-4 px-6 top-0 z-50"
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6 }}
@@ -14,7 +14,7 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold">Register</span>
+          <span className="text-3xl font-bold">Register</span>
           <span className="bg-green-400 px-2 py-1 rounded text-sm font-semibold">
             FUNDS
           </span>

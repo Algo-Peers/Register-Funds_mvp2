@@ -60,7 +60,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
       <div className="p-6">
         <p className="text-green-400 text-sm mb-2">{location}</p>
         <h3 className="text-white text-xl font-bold mb-3">{title}</h3>
-        <p className="text-gray-300 text-sm mb-4 leading-relaxed">{description}</p>
+        <p className="text-gray-300 text-sm mb-4 leading-none">{description}</p>
         
         {/* Progress Bar */}
         <div className="mb-4">

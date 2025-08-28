@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 
 const DonatePage: React.FC = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  // const { id } = useParams();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState('');
-  const [tipAmount, setTipAmount] = useState(0);
+  const [tipAmount] = useState(0);
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -58,14 +58,14 @@ const DonatePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
+    <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100 text-white">
+      <div className='p-10'><Header /></div>
       
       {/* Back Button */}
       <div className="max-w-7xl mx-auto px-6 py-4">
         <motion.button 
           onClick={() => navigate(-1)}
-          className="flex items-center text-green-400 hover:text-green-300 transition-colors duration-200"
+          className="flex items-center bg-[#132418] text-white px-4 py-2 rounded-full hover:text-green-300"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -75,23 +75,23 @@ const DonatePage: React.FC = () => {
         </motion.button>
       </div>
 
-      <div className="max-w-2xl mx-auto px-6 pb-12">
+      <div className="max-w-2xl mx-auto py-4 mb-4 px-14 rounded-xl pb-12 bg-[#1F3F27]">
         {/* Campaign Info */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-8 text-center"
+          className="mb-8 text-start"
         >
           <div className="mb-6">
             <img 
               src="/public/students-happy.jpg" 
               alt="Support Christ is King Primary School"
-              className="w-full max-w-md mx-auto h-48 object-cover rounded-lg"
+              className="w-full max-w-xl mx-auto h-48 object-cover rounded-lg"
             />
           </div>
-          <p className="text-gray-400 mb-2">You're donating to</p>
-          <h1 className="text-2xl font-bold text-white">Support Christ is King Primary School</h1>
+          <p className="text-2xl mb-2 font-bold">You're donating to</p>
+          <h1 className="text-xl fontbold text-white">Support Christ is King Primary School</h1>
         </motion.div>
 
         {/* Donation Form */}
@@ -100,7 +100,7 @@ const DonatePage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-gray-800 rounded-lg p-8"
+          className=" rounded-lg"
         >
           {/* Amount Selection */}
           <div className="mb-8">
@@ -113,10 +113,10 @@ const DonatePage: React.FC = () => {
                   key={amount}
                   type="button"
                   onClick={() => handleAmountSelect(amount)}
-                  className={`py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+                  className={`py-3 px-4 rounded-full borde font-semibold transition-all duration-200 ${
                     selectedAmount === amount
-                      ? 'bg-green-400 text-gray-900'
-                      : 'bg-gray-700 text-white hover:bg-gray-600'
+                      ? 'bg-[#1c3020] text-white'
+                      : 'bg-[#2D5037] text-white hover:bg-'
                   }`}
                 >
                   ${amount}
@@ -125,41 +125,25 @@ const DonatePage: React.FC = () => {
             </div>
 
             {/* Custom Amount */}
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-2xl text-gray-400">$</span>
+            <div className="flex items-center justify-between bg-[#2D5037] rounded-full px-4 py-3">
+              <span className="text-2xl text-gray-400">$</span>
               <input
-                type="number"
+                type="text"
                 value={customAmount}
                 onChange={(e) => handleCustomAmountChange(e.target.value)}
                 placeholder="0.00"
-                className="w-full bg-gray-700 text-white text-2xl pl-8 pr-4 py-4 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                className="bg-transparent text-white text-xl text-right focus:outline-none flex-1 ml-2"
               />
             </div>
           </div>
 
           {/* Tip Section */}
-          <div className="mb-8 p-4 bg-gray-700 rounded-lg">
+          <div className="mb-8 rounded-lg">
             <h4 className="text-white font-semibold mb-2">Tip RegisterFunds services</h4>
             <p className="text-gray-300 text-sm mb-4">
               Lorem ipsum dolor sit amet consectetur. Ac lectus urna cras mattis aliquam. 
               Quam tortor facilisi varius molestie ut quam sit euismod maecenas.
             </p>
-            <div className="flex gap-2">
-              {[0, 5, 10, 15].map((tip) => (
-                <button
-                  key={tip}
-                  type="button"
-                  onClick={() => setTipAmount(tip)}
-                  className={`py-2 px-4 rounded font-semibold transition-all duration-200 ${
-                    tipAmount === tip
-                      ? 'bg-green-400 text-gray-900'
-                      : 'bg-gray-600 text-white hover:bg-gray-500'
-                  }`}
-                >
-                  {tip === 0 ? 'No tip' : `$${tip}`}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Payment Form */}
@@ -174,7 +158,7 @@ const DonatePage: React.FC = () => {
                   placeholder="Email address"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
               </div>
@@ -186,7 +170,7 @@ const DonatePage: React.FC = () => {
                   placeholder="First Name"
                   value={formData.firstName}
                   onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  className="bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
                 <input
@@ -194,7 +178,7 @@ const DonatePage: React.FC = () => {
                   placeholder="Last Name"
                   value={formData.lastName}
                   onChange={(e) => handleInputChange('lastName', e.target.value)}
-                  className="bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
               </div>
@@ -206,7 +190,7 @@ const DonatePage: React.FC = () => {
                   placeholder="Card Number"
                   value={formData.cardNumber}
                   onChange={(e) => handleInputChange('cardNumber', e.target.value)}
-                  className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
               </div>
@@ -218,7 +202,7 @@ const DonatePage: React.FC = () => {
                   placeholder="MM/YY"
                   value={formData.expiryDate}
                   onChange={(e) => handleInputChange('expiryDate', e.target.value)}
-                  className="bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
                 <input
@@ -226,7 +210,7 @@ const DonatePage: React.FC = () => {
                   placeholder="CVV"
                   value={formData.cvv}
                   onChange={(e) => handleInputChange('cvv', e.target.value)}
-                  className="bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
               </div>
@@ -238,7 +222,7 @@ const DonatePage: React.FC = () => {
                   placeholder="Name on Card"
                   value={formData.nameOnCard}
                   onChange={(e) => handleInputChange('nameOnCard', e.target.value)}
-                  className="w-full bg-gray-700 text-white px-4 py-3 rounded-lg border border-gray-600 focus:border-green-400 focus:outline-none"
+                  className="w-full bg-[#2D5037] text-white px-4 py-3 rounded-full focus:outline-none"
                   required
                 />
               </div>
@@ -254,13 +238,13 @@ const DonatePage: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full bg-green-400 text-gray-900 py-4 rounded-lg font-bold text-lg hover:bg-green-500 transition-all duration-200 transform hover:scale-[1.02]"
+              className="w-full bg-[#235F33] text-white py-3 rounded-full font-bold text-lg"
             >
               Donate Now
             </button>
 
             <p className="text-gray-400 text-sm text-center mt-4 leading-relaxed">
-              By clicking 'Donate now', you agree to RegisterFunds' Terms of Service and Privacy Notice. 
+              By clicking 'Donate now', you agree to <br /> RegisterFunds' Terms of Service and Privacy <br /> Notice. 
               Learn more about pricing and fees.
             </p>
           </div>

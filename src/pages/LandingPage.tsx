@@ -69,13 +69,14 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
-      <Header />
+      <div className="p-10"><Header /></div>
+      
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 py-20 my-20 mx-16 rounded-2xl px-6">
+      <section className="relative xl:max-w-7xl lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h1 
-            className="text-5xl md:text-6xl font-bold text-white leading-tight"
+            className="text-4xl md:text-5xl font-bold text-white leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -102,7 +103,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Donation Process Section */}
-      <section className="py-16 px-6">
+      <section className="py-10 mb-32">
         <div className="max-w-6xl mx-auto grid grid-cols-2 gap-16">
           <motion.div 
             className="text-start mb-16"
@@ -162,8 +163,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="bg[#000000] opacity40 rounded-2xl mx-16 py-16 px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="bg-[#111C14] opacity40 max-w-7xl rounded-2xl mx-auto py-16 px-6">
+        <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-12"
             initial={{ opacity: 0, y: 30 }}
@@ -171,10 +172,10 @@ const LandingPage: React.FC = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-[#3EFF71] opacity-100 mb-6">
+            <h2 className="text-4xl font-bold text-[#3EFF71] opacity-85 mb-6">
               We are Backed by
             </h2>
-            <p className="text-gray-300 text-lg">
+            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
               Lorem ipsum dolor sit amet consectetur. Ac lectus urna cras mattis aliquam. Quam tortor facilisi varius molestie 
               ut quam sit euismod maecenas. Sit fringilla porta consequat ante. Vitae elementum pellentesque amet nulla porttitor 
               ut amet diam purus. Cras enim ultricies quis non pulvinar turpis etiam.             
@@ -192,16 +193,16 @@ const LandingPage: React.FC = () => {
               {/* First set of partners */}
               {partners.map((partner, index) => (
                 <div key={index} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#303030] rounded-full items-center flex p-4 hover:bg-gray-700 transition-colors min-w-[200px]">
-                    <span className="text-white text-3xl  font-semibold">{partner}</span>
+                  <div className="bg-[#17271C] rounded-full items-center flex p-4 hover:bg-[#0b140e] transition-colors min-w-[200px]">
+                    <span className="text-white text-3xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {partners.map((partner, index) => (
                 <div key={`duplicate-${index}`} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#303030] rounded-full p-4 items-center flex hover:bg-gray-700 transition-colors min-w-[200px]">
-                    <span className="text-white text-3xl flex items-center font-semibold">{partner}</span>
+                  <div className="bg-[#17271C] rounded-full p-4 items-center justify-center flex hover:bg-[#0b140e] transition-colors min-w-[200px]">
+                    <span className="text-white text-3xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}

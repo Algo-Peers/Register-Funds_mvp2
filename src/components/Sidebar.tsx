@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Home, Heart, Settings, HelpCircle, LogOut } from 'lucide-react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface SidebarProps {
   className?: string;
@@ -45,18 +45,6 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
 
   return (
     <div className={`bg-[#0A160D] text-white h-screen w-64 flex flex-col ${className}`}>
-      {/* Logo */}
-      <div className="p-6 border-b border-gray-700">
-        <Link to="/">
-        <div className="flex items-center space-x-2">
-          <span className="text-white font-bold text-xl">Register</span>
-          <span className="bg-green-400 text-green-900 px-2 py-1 rounded text-sm font-medium">
-            FUNDS
-          </span>
-        </div>
-        </Link>
-      </div>
-
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
@@ -87,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
       </nav>
 
       {/* Logout */}
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4">
         <motion.button
           onClick={handleLogout}
           className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-all duration-200"

@@ -11,9 +11,9 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({ type }) => {
   return (
     <div className="w-full flex flex-col sm:flex-row items-center justify-between p-6 lg:p-8">
       {/* Logo */}
-      <Link to="/" className="flex items-center space-x-2 mb-4 sm:mb-0">
-        <span className="text-xl sm:text-2xl font-bold text-green-400">Register</span>
-        <span className="bg-green-400 text-gray-900 px-2 py-1 rounded text-xs sm:text-sm font-semibold">
+      <Link to="/" className="flex items-center space-x-2">
+        <span className="text-3xl font-bold">Register</span>
+        <span className="bg-green-400 px-2 py-1 rounded text-sm font-semibold">
           FUNDS
         </span>
       </Link>

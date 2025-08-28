@@ -8,6 +8,7 @@ import Overview from "./pages/campaigns/Overview"
 import Campaigns from "./pages/campaigns/Campaigns";
 import CreateCampaign from "./pages/CreateCampaign";
 import SignupSteps from "./components/SignupSteps/SignupSteps";
+import DonatePage from "./pages/DonatePage";
 
 
 const App = () => {
@@ -22,10 +23,8 @@ const App = () => {
         <Route path="/overview" element={<Overview />} />
         <Route path="/campaign" element={<Campaigns />} />
         <Route path="/signup-steps" element={<SignupSteps />} />
-
-        
-
         <Route path="/create" element={<CreateCampaign />} />
+        <Route path="/donate" element={<DonatePage />}/>
 
       </Routes>
     </Router>
