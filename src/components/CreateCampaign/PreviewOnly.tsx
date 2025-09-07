@@ -16,7 +16,7 @@ const PreviewOnly: React.FC = () => {
   });
 
   return (
-    <div className="h-full bg-gray-900">
+    <div className="h-full bg-[]">
       <div className="max-w-4xl mx-auto h-full flex flex-col">
         {/* Preview Header */}
         <div className="p-6 border-b border-gray-700">
@@ -45,11 +45,11 @@ const PreviewOnly: React.FC = () => {
         </div>
         
         {/* Preview Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-800 rounded-lg p-6 space-y-8"
+            className="bg-[] rounded-lg p-6 space-y-8"
           >
             {/* Title */}
             <div>

@@ -35,7 +35,7 @@ const Header: React.FC = () => {
           <Link to="/donors" className="hidden md:block border border-green-400 text-green-400 px-4 py-2 rounded-full hover:bg-green-400 hover:text-gray-900 transition-all duration-200">
             For Donors →
           </Link>
-          <Link to="/signup" className="flex items-center bg-[#379751] opacity-30 text-white px-4 py-2 rounded-full font-semibold hover:bg-[#21442A] transition-all duration-200">
+          <Link to="/signup" className="flex items-center bg-[#379751] bg-opacity-30 text-white px-4 py-2 rounded-full font-semibold hover:bg-[#21442A] transition-all duration-200">
             For Schools
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>

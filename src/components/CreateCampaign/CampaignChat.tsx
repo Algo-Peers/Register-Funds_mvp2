@@ -34,7 +34,7 @@ const CampaignChat: React.FC<CampaignChatProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-900">
+    <div className="flex flex-col h-full bg-[#0A160D]">
       {/* Chat Header */}
       <div className="p-6 border-b border-gray-700">
         <h2 className="text-xl font-semibold text-white mb-2">Create a Campaign</h2>

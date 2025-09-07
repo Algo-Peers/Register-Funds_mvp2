@@ -160,7 +160,7 @@ const Campaigns: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-xl font-bold mb-2">Share your challenges with donors who care</h2>
+                  <h2 className="text-2xl font-bold mb-2">Share your challenges with donors who care</h2>
                   <p className="text-gray-400 mb-6">
                     Let donors know what your school is facing—and how they can help.
                   </p>

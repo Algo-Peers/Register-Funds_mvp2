@@ -9,7 +9,7 @@ const CampaignPreview: React.FC<CampaignPreviewProps> = ({
   onLaunch
 }) => {
   return (
-    <div className="h-full bg-gray-900 border-l border-gray-700">
+    <div className="h-full bg-[#0A160D] border-l border-gray-700">
       {/* Preview Header */}
       <div className="p-6 border-b border-gray-700 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">Campaign Preview</h3>

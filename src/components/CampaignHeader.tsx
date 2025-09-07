@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, Bell } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface CampaignHeaderProps {
@@ -48,13 +48,13 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
           </div>
 
           {/* Notifications */}
-          <motion.button
+          {/* <motion.button
             className="p-2 rounded-lg bg-[#111C14] transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <Bell size={20} className="text-gray-300" />
-          </motion.button>
+          </motion.button> */}
 
           {/* User Profile */}
           <motion.div

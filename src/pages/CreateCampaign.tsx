@@ -37,14 +37,14 @@ const CreateCampaign: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-900">
+    <div className="flex h-screen bg-[#0A160D]">
       {/* Sidebar */}
       <Sidebar />
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-gray-800 border-b border-gray-700 px-6 py-4">
+        <header className="bg-[#0A160D] border-b border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button className="text-gray-400 hover:text-white transition-colors">
@@ -60,7 +60,7 @@ const CreateCampaign: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="bg-gray-700 text-white pl-10 pr-4 py-2 rounded-lg border border-gray-600 focus:border-green-500 focus:outline-none w-64"
+                  className="bg-[#0A160D] text-white pl-10 pr-4 py-2 rounded-lg border border-gray-600 focus:border-green-500 focus:outline-none w-64"
                 />
               </div>
               
@@ -79,7 +79,7 @@ const CreateCampaign: React.FC = () => {
         
         {/* View Mode Navigation (for development) */}
         {import.meta.env.DEV && (
-          <div className="bg-gray-800 border-b border-gray-700 px-6 py-3">
+          <div className="border-b border-gray-700 px-6 py-3">
             <div className="flex space-x-2">
               {[
                 { mode: 'chat-with-preview' as ViewMode, label: 'Chat with Preview' },
@@ -92,7 +92,7 @@ const CreateCampaign: React.FC = () => {
                   className={`px-3 py-1 text-sm rounded transition-colors ${
                     viewMode === mode
                       ? 'bg-green-600 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      : 'bg-gray-800 text-gray-300 hover:bg-gray-600'
                   }`}
                 >
                   {label}

@@ -46,7 +46,7 @@ const ChatOnly: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full bg-gray-900">
+    <div className="flex h-full bg-[#0A160D]">
       {/* Chat Section */}
       <div className="flex-1 flex flex-col max-w-4xl mx-auto">
         {/* Chat Header */}

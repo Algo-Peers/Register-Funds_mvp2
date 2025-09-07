@@ -60,7 +60,7 @@ const ChatWithPreview: React.FC = () => {
   return (
     <div className="flex h-full">
       {/* Chat Section */}
-      <div className="flex-1 flex flex-col bg-gray-900">
+      <div className="flex-1 flex flex-col border-l bggray-900">
         {/* Chat Header */}
         <div className="p-6 border-b border-gray-700">
           <h2 className="text-green-400 text-lg font-medium mb-2">Create a Campaign</h2>
@@ -68,7 +68,7 @@ const ChatWithPreview: React.FC = () => {
         </div>
         
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide">
           {messages.map((msg) => (
             <motion.div
               key={msg.id}
@@ -116,7 +116,7 @@ const ChatWithPreview: React.FC = () => {
       </div>
       
       {/* Preview Section */}
-      <div className="w-96 bg-gray-800 border-l border-gray-700 flex flex-col">
+      <div className="w-96 border-l border-gray-700 flex flex-col">
         {/* Preview Header */}
         <div className="p-4 border-b border-gray-700 flex items-center justify-between">
           <h3 className="text-white font-medium">Campaign Preview</h3>
@@ -131,7 +131,7 @@ const ChatWithPreview: React.FC = () => {
         </div>
         
         {/* Preview Content */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide">
           {/* Title */}
           <div>
             <h4 className="text-green-400 text-sm font-medium mb-2">TITLE</h4>
