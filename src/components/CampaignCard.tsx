@@ -36,7 +36,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
 
   return (
     <motion.div
-      className="bg-[#21442A] opacity-100 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+      className="bg-[#203F28] opacity-100 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -64,7 +64,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         
         {/* Progress Bar */}
         <div className="mb-4">
-          <div className="w-full bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-[#304435] rounded-full h-2">
             <motion.div 
               className="bg-green-400 h-2 rounded-full"
               initial={{ width: 0 }}

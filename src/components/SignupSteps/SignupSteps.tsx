@@ -94,9 +94,9 @@ const SignupSteps: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#020E05]">
-      <div className="p-10"><AuthHeader type="signup" /></div>
+      <div className=""><AuthHeader type="signup" /></div>
 
-      <div className="flex flex-col lg:flex-row min-h-[calc(100vh-80px)]">
+      <div className="flex flex-col lg:flex-row">
         {/* Left Side - Form */}
         <div className="lg:w-1/2 p-8 lg:px-16 flex flex-col">
           {/* Progress Bar */}
@@ -104,9 +104,9 @@ const SignupSteps: React.FC = () => {
             <div className="flex items-center justify-end mb-2">
               <span className="text-sm font-semibold text-green-400">{progressPercentage}%</span>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-[#18231B] rounded-full">
               <motion.div 
-                className="bg-green-400 h-2 rounded-full"
+                className="bg-green-400 rounded-full py-1"
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercentage}%` }}
                 transition={{ duration: 0.5 }}

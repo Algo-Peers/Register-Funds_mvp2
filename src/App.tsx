@@ -4,8 +4,8 @@ import CampaignsPage from "./pages/CampaignsPage";
 import CampaignsDetails from "./pages/CampaignsDetails";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
-import Overview from "./pages/campaigns/Overview"
-import Campaigns from "./pages/campaigns/Campaigns";
+import Overview from "./pages/Schools/Overview"
+import Campaigns from "./pages/Schools/Campaigns";
 import CreateCampaign from "./pages/CreateCampaign";
 import SignupSteps from "./components/SignupSteps/SignupSteps";
 import DonatePage from "./pages/DonatePage";
@@ -25,7 +25,6 @@ const App = () => {
         <Route path="/signup-steps" element={<SignupSteps />} />
         <Route path="/create" element={<CreateCampaign />} />
         <Route path="/donate" element={<DonatePage />}/>
-
       </Routes>
     </Router>
   );

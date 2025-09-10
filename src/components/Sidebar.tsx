@@ -1,13 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Home, Heart, Settings, HelpCircle, LogOut } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-interface SidebarProps {
-  className?: string;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
+const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -44,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
   };
 
   return (
-    <div className={`bg-[#0A160D] text-white h-screen w-64 flex flex-col ${className}`}>
+    <div className="bg-[#0A160D] text-white h-full w-64 rounded-se-3xl flex flex-col overflow-hidden">
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
@@ -61,8 +56,8 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
                   onClick={() => navigate(item.path)}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                     item.active
-                      ? 'text-green-400 border-l-4 border-green-400'
-                      : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                      ? 'text-green-400 bg-[#142D1A] border-l-4 border-green-400'
+                      : 'text-gray-300 hover:bg-[#1C271E] hover:text-white'
                   }`}
                 >
                   <Icon size={20} />
@@ -78,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
       <div className="p-4">
         <motion.button
           onClick={handleLogout}
-          className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-all duration-200"
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-[#1C271E] hover:text-red-400 transition-all duration-200"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >

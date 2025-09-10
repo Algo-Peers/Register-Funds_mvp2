@@ -164,9 +164,6 @@ const CampaignsPage: React.FC = () => {
                   <option value="Tamale" className="bg-[#020E05] text-white">Tamale</option>
                   <option value="Ho" className="bg-[#020E05] text-white">Ho</option>
                   <option value="Sunyani" className="bg-[#020E05] text-white">Sunyani</option>
-                  <option value="Bolgatanga" className="bg-[#020E05] text-white">Bolgatanga</option>
-                  <option value="Wa" className="bg-[#020E05] text-white">Wa</option>
-                  <option value="Techiman" className="bg-[#020E05] text-white">Techiman</option>
                 </select>
                 <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

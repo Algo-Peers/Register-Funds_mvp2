@@ -19,7 +19,7 @@ const SignupPage: React.FC = () => {
       </motion.header>
 
       {/* Main Content - Centered */}
-      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-8">
+      <div className="flex items-center justify-center px-8">
         <motion.div 
           className="text-center max-w-2xl"
           initial={{ opacity: 0, y: 50 }}

@@ -57,6 +57,33 @@ const LandingPage: React.FC = () => {
       title: "Support Christ is King Primary School",
       description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
       raised: "Raised: $12,000"
+    },
+      {
+      id: "5",
+      image: "/students-happy.jpg",
+      category: "Basic Computers",
+      location: "Cape Coast, Ghana",
+      title: "Support Christ is King Primary School",
+      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
+      raised: "Raised: $12,000"
+    },
+      {
+      id: "6",
+      image: "/students-happy.jpg",
+      category: "Basic Computers",
+      location: "Cape Coast, Ghana",
+      title: "Support Christ is King Primary School",
+      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
+      raised: "Raised: $12,000"
+    },
+      {
+      id: "7",
+      image: "/students-happy.jpg",
+      category: "Basic Computers",
+      location: "Cape Coast, Ghana",
+      title: "Support Christ is King Primary School",
+      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
+      raised: "Raised: $12,000"
     }
   ];
 
@@ -74,7 +101,7 @@ const LandingPage: React.FC = () => {
       
       {/* Hero Section */}
       <section className="relative xl:max-w-7xl lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl  mx-auto text-center">
           <motion.h1 
             className="text-4xl md:text-5xl font-bold text-white leading-tight"
             initial={{ opacity: 0, y: 50 }}
@@ -93,7 +120,7 @@ const LandingPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <Link to="/campaigns">
-            <button className="flex items-center border gap-4 justify-end border-green-400 text-green-400 px-6 py-2 rounded-full font-semibold text-lg hover:bg-green-400 hover:text-gray-900 transition-all duration-200">
+            <button className="flex items-center border gap-4 justify-end border-gray-400 text-white px-6 py-2 rounded-full font-semibold text-lg hover:bg-[#020E05] transition-all duration-200">
               Donate to a Cause      
               <MoveRight />      
             </button>
@@ -103,7 +130,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Donation Process Section */}
-      <section className="py-10 mb-32">
+      <section className="py-10 mb-32 xl:max-w-7xl lg:max-w-4xl mx-auto">
         <div className="max-w-6xl mx-auto grid grid-cols-2 gap-16">
           <motion.div 
             className="text-start mb-16"
@@ -115,9 +142,7 @@ const LandingPage: React.FC = () => {
             <h2 className="text-4xl font-bold text-white mb-6">
               Donation on Register Funds is easy, powerful, and trusted            
             </h2>
-            <div className="bg-[#162019] h-full w-full rounded-2xl" > 
-
-            </div>
+            <div className="bg-[#162019] h-full w-full rounded-2xl"> </div>
           </motion.div>
           
           <div className="gap-8">
@@ -163,7 +188,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="bg-[#111C14] opacity40 max-w-7xl rounded-2xl mx-auto py-16 px-6">
+      {/* <section className="bg-[#111C14] opacity40 max-w-7xl rounded-2xl mx-auto py-16 px-6"> */}
+      <section className="relative xl:max-w-7xl  lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -193,16 +219,16 @@ const LandingPage: React.FC = () => {
               {/* First set of partners */}
               {partners.map((partner, index) => (
                 <div key={index} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#17271C] rounded-full items-center flex p-4 hover:bg-[#0b140e] transition-colors min-w-[200px]">
-                    <span className="text-white text-3xl font-medium">{partner}</span>
+                  <div className="bg-[#17271C] rounded-full items-center flex p-3 px-6 hover:bg-[#0b140e] transition-colors min-w-[200px]">
+                    <span className="text-white text-2xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {partners.map((partner, index) => (
                 <div key={`duplicate-${index}`} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#17271C] rounded-full p-4 items-center justify-center flex hover:bg-[#0b140e] transition-colors min-w-[200px]">
-                    <span className="text-white text-3xl font-medium">{partner}</span>
+                  <div className="bg-[#17271C] rounded-full p-3 px-6 items-center justify-center flex hover:bg-[#0b140e] transition-colors min-w-[200px]">
+                    <span className="text-white text-2xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}

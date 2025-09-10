@@ -12,7 +12,6 @@ const CampaignsDetails: React.FC = () => {
     { name: 'Jane Smith', amount: '$75' },
     { name: 'Emily Johnson', amount: '$100' },
     { name: 'Michael Brown', amount: '$125' },
-    { name: 'Sarah Davis', amount: '$150' }
   ];
 
   const comments = [
@@ -137,16 +136,22 @@ const CampaignsDetails: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex gap-4 mb-12 max-w-xl"
+              className="flex gap-4 mb-12 max-w-xl w-full border-b border-[#273F2D]"
             >
+
+            <div className='flex mb-4 max-w-full w-full'>
               <Link to="/donate">
-              <button className="w-full bg-[#112416] text-white px-8 py-3 rounded-full font-semibold flex-1 md:flex-none">
+              <button className="w-full bg-[#112416] text-white px-8 py-3 rounded-full font-semibold">
                 Donate
               </button>
               </Link>
+
+               <Link to="/donate">
               <button className="w-full bg-[#112416] text-white px-8 py-3 rounded-full font-semibold">
-                Share
+                Donate
               </button>
+              </Link>
+            </div>
             </motion.div>
 
             {/* Recent Updates */}
@@ -292,7 +297,7 @@ const CampaignsDetails: React.FC = () => {
                   <div className="relative w-16 h-16">
                     <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
                       <path
-                        className="text-gray-700"
+                        className="text-[#445248]"
                         stroke="currentColor"
                         strokeWidth="3"
                         fill="none"
@@ -309,7 +314,7 @@ const CampaignsDetails: React.FC = () => {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-green-400 font-bold text-sm">40%</span>
+                      <span className="text-white font-bold text-base">40%</span>
                     </div>
                   </div>
                 </div>
@@ -317,7 +322,7 @@ const CampaignsDetails: React.FC = () => {
 
               <div className="space-y-3 mb-6">
                 <Link to="/donate">
-                  <button className="w-full bg-[#1B3522] text-white px-6 py-3 rounded-full font-semibold">
+                  <button className="w-full border border-[#3E5A45] bg-[#1B3522] text-white px-6 py-3 rounded-full font-semibold">
                     Donate
                   </button>
                 </Link>
@@ -338,10 +343,8 @@ const CampaignsDetails: React.FC = () => {
                 <div className="space-y-3">
                   {recentDonors.map((donor, index) => (
                     <div key={index} className="flex items-center gap-3">
-                      <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                        </svg>
+                      <div className="w-8 h-8 bggreen-400 rounded-full flex items-center justify-center">
+                        <img src="/Donor1.svg" alt="" />
                       </div>
                       <div className="flex-1">
                         <div className="text-white text-sm">{donor.name}</div>

@@ -137,19 +137,22 @@ const Campaigns: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col h-screen bg-[]">
+    <div className="flex flex-col h-screen bg-[#020E05]">
       {/* Header at the top */}
-      <CampaignHeader title="Campaigns" />
+      <CampaignHeader title="" />
       
       {/* Sidebar and Main Content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden bg-[#020E05]">
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Content */}
-          <main className="flex-1 overflow-y-auto bg-[#020E05] text-white p-6">
+          <main className="flex-1 overflow-y-auto text-white p-6 bg-[#020E05]">
+            {/* Page Title */}
+            <h1 className="text-2xl font-bold mb-6">Campaigns</h1>
+            
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column - Main Content */}
               <div className="lg:col-span-2 space-y-8">
@@ -165,7 +168,7 @@ const Campaigns: React.FC = () => {
                     Let donors know what your school is facing—and how they can help.
                   </p>
                   <motion.button
-                    onClick={() => navigate('/campaigns/new')}
+                    onClick={() => navigate('/create')}
                     className="bg-[#142D1A] hover:bg-[#142D1A] text-white px-8 py-2 rounded-full flex items-center justify-between space-x-2"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -255,7 +258,7 @@ const Campaigns: React.FC = () => {
 
 
                   {/* Campaign List */}
-                  <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-hide">
+                  <div className="space-y-3 max-h-full overflow-y-auto scrollbar-hide">
                     {getDraftsAndCompleted().map((campaign, index) => (
                       <CampaignCard key={campaign.id} campaign={campaign} index={index} />
                     ))}
