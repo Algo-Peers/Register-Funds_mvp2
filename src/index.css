@@ -48,9 +48,9 @@
   animation: scroll 5s linear infinite;
 }
 
-.animate-scroll:hover {
+/* .animate-scroll:hover {
   animation-play-state: paused;
-}
+} */
 
 /* Hide scrollbar utility */
 .scrollbar-hide {

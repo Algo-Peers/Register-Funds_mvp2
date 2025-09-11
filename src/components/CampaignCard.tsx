@@ -48,7 +48,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         <img 
           src={image} 
           alt={title}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover p-2 rounded-md"
         />
         <div className="absolute bottom-4 left-4">
           <span className="bg-[#000000] opacity-50 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -64,9 +64,9 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
         
         {/* Progress Bar */}
         <div className="mb-4">
-          <div className="w-full bg-[#304435] rounded-full h-2">
+          <div className="w-full bg-[#34543D] rounded-full h-2">
             <motion.div 
-              className="bg-green-400 h-2 rounded-full"
+              className="bg-[#379751] h-2 rounded-full"
               initial={{ width: 0 }}
               whileInView={{ width: `${progressPercentage}%` }}
               transition={{ duration: 1, delay: index * 0.1 + 0.5 }}

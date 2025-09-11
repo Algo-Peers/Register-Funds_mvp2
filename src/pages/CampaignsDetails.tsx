@@ -195,12 +195,12 @@ const CampaignsDetails: React.FC = () => {
               <h2 className="text-2xl font-bold text-green-400 opacity-85 mb-6">Reports & Relevant Document</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
                 {reports.map((report, index) => (
-                  <div key={index} className="bg-[#121F15] rounded-full p-4 flex items-center justify-between cursor-pointer">
+                  <div key={index} className="bg-[#121F15] rounded-full px-4 py-1 flex items-center justify-between cursor-pointer">
                     <div className="flex items-center gap-2">
                       <FileDown />
                       <div>
                         <p className="text-white font-semibold">{report.name}</p>
-                        <p className="text-gray-400 text-sm">{report.size}</p>
+                        <p className="text-white text-sm text-opacity-25">{report.size}</p>
                       </div>
                     </div>
                   </div>
@@ -220,9 +220,10 @@ const CampaignsDetails: React.FC = () => {
                 {comments.map((comment, index) => (
                   <div key={index} className="">
                     <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center text-gray-900 font-bold mr-4">
+                      {/* <div className="w-10 h-10 bg-green-400 rounded-full flex items-center justify-center text-gray-900 font-bold mr-4">
                         {comment.name.charAt(0)}
-                      </div>
+                      </div> */}
+                      <img src="/Donor1.svg" alt="" className='mr-4'/>
                       <div>
                         <div className="flex items-center">
                           <span className="text-white font-semibold mr-2">{comment.name}</span>
@@ -238,7 +239,7 @@ const CampaignsDetails: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Organizer - Moved from sidebar */}
+            {/* Organizer */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -248,10 +249,8 @@ const CampaignsDetails: React.FC = () => {
               <h3 className="text-xl font-bold text-green-400 mb-6">Organizer</h3>
               
               <div className="flex items-center mb-4">
-                <div className='flex'>
-                  <div className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center text-gray-900 font-bold mr-4">
-                    JJ
-                  </div>
+                <div className='flex gap-4'>
+                  <img src="/organizer.svg" alt="" className='w-14 h-14'/>
                   <div>
                     <h4 className="text-white font-semibold">John Johnson</h4>
                     <p className="text-gray-400 text-sm">ICT Coordinator</p>
@@ -263,13 +262,28 @@ const CampaignsDetails: React.FC = () => {
                   <ArrowRight className="inline-block ml-2" size={16} />
                 </button>
               </div>
+            </motion.div>
 
-              <div className="border-t border-gray-700 pt-4">
-                <p className="text-gray-400 text-sm mb-2">on Behalf of</p>
+
+
+            {/* On Behalf of */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="mb-12"
+            >
+              <div className="pt-4">
+              <h3 className='text-xl font-bold text-green-400 mb-6'>On Behalf of</h3>
                 <h5 className="text-white font-semibold mb-1">Christ is King Primary School</h5>
                 <p className="text-gray-400 text-sm mb-4">Cape Coast, Ghana</p>
-                <button className="text-green-400 hover:text-green-300 font-semibold text-sm">
+                {/* <button className="font-semibold text-sm">
                   View School Profile →
+                </button> */}
+
+                 <button className="bg-[#121F15] text-white px-4 py-2 rounded-full font-semibold mb-4">
+                    View School Profile
+                  <ArrowRight className="inline-block ml-2" size={16} />
                 </button>
               </div>
             </motion.div>
@@ -282,7 +296,7 @@ const CampaignsDetails: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-[#1F3B26] rounded-lg p-6 mb-8 sticky top-24"
+              className="bg-[#1F3B26] rounded-3xl p-6 mb-2 sticky top-24 "
             >
               <div className="mb-6">
                 <div className="flex justify-between items-start mb-4">
@@ -314,7 +328,7 @@ const CampaignsDetails: React.FC = () => {
                       />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-white font-bold text-base">40%</span>
+                      <span className="text-white font-bold text-base">50%</span>
                     </div>
                   </div>
                 </div>
@@ -333,10 +347,8 @@ const CampaignsDetails: React.FC = () => {
 
               <div className="border-t border-gray-700 pt-4">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-4 h-4 bg-green-400 rounded-sm flex items-center justify-center">
-                    <svg className="w-3 h-3 text-gray-900" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                    </svg>
+                  <div className="w-8 h-8 bggreen-400 rounded-sm flex items-center justify-center">
+                    <img src="/people.svg" alt="" />                   
                   </div>
                   <p className="text-white text-sm">24 people are already donated</p>
                 </div>

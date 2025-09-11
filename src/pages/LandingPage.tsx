@@ -188,8 +188,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Partners Section */}
-      {/* <section className="bg-[#111C14] opacity40 max-w-7xl rounded-2xl mx-auto py-16 px-6"> */}
-      <section className="relative xl:max-w-7xl  lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
+      <section className="relative xl:max-w-7xl lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="text-center mb-12"
@@ -238,7 +237,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Campaign Cards Section */}
-      <section className="py-16 px-6">
+      <section className="py-16 px-6 xl:max-w-7xl lg:max-w-4xl mx-auto">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-12">
             <motion.div
@@ -290,13 +289,13 @@ const LandingPage: React.FC = () => {
               <div className="flex gap-2">
                 <button 
                   onClick={scrollLeft}
-                  className="border text-white p-4 rounded-full hover:bg-gray-700 transition-colors"
+                  className="border text-white p-4 rounded-full hover:bg-[] transition-colors"
                 >
                   <ArrowLeft />
                 </button>
                 <button 
                   onClick={scrollRight}
-                  className="border text-white p-4 rounded-full hover:bg-gray-700 transition-colors"
+                  className="border text-white p-4 rounded-full hover:bg-[#040a05] transition-colors"
                 >
                   <ArrowRight />
                 </button>
