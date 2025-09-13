@@ -1,161 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import CampaignCard from '../components/CampaignCard';
+import { useCampaigns } from '../hooks';
 
 const CampaignsPage: React.FC = () => {
   const [visibleCampaigns, setVisibleCampaigns] = useState(9);
   const [selectedLocation, setSelectedLocation] = useState('All around Ghana');
+  const { campaigns, loading, error, refetch } = useCampaigns();
 
-  // Sample campaign data - replace with backend real data later
-  const allCampaigns = [
-    {
-      id: "1",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "2",
-      image: "/students-happy.jpg",
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "3",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "4",
-      image: "/students-happy.jpg",
-      category: "School Supplies",
-      location: "Accra, Ghana",
-      title: "Support St. Mary's Elementary School",
-      description: "Help provide essential school supplies and learning materials to students in need for better educational outcomes.",
-      raised: "Raised: $8,500"
-    },
-    {
-      id: "5",
-      image: "/students-happy.jpg",
-      category: "Infrastructure",
-      location: "Kumasi, Ghana",
-      title: "Build New Classroom Block",
-      description: "Support the construction of a new classroom block to accommodate more students and improve learning conditions.",
-      raised: "Raised: $25,000"
-    },
-    {
-      id: "6",
-      image: "/students-happy.jpg",
-      category: "Library Books",
-      location: "Tamale, Ghana",
-      title: "Expand School Library Collection",
-      description: "Help build a comprehensive library with books and reading materials to enhance literacy and learning.",
-      raised: "Raised: $6,200"
-    },
-    {
-      id: "7",
-      image: "/students-happy.jpg",
-      category: "Science Equipment",
-      location: "Ho, Ghana",
-      title: "Science Laboratory Equipment",
-      description: "Provide essential laboratory equipment and materials for hands-on science education and experiments.",
-      raised: "Raised: $15,800"
-    },
-    {
-      id: "8",
-      image: "/students-happy.jpg",
-      category: "Sports Equipment",
-      location: "Sunyani, Ghana",
-      title: "Sports and Recreation Facilities",
-      description: "Support physical education with sports equipment and facilities for student health and development.",
-      raised: "Raised: $9,400"
-    },
-    {
-      id: "9",
-      image: "/students-happy.jpg",
-      category: "Water & Sanitation",
-      location: "Bolgatanga, Ghana",
-      title: "Clean Water and Sanitation Project",
-      description: "Improve school sanitation facilities and provide clean water access for better health and hygiene.",
-      raised: "Raised: $18,600"
-    },
-    {
-      id: "10",
-      image: "/students-happy.jpg",
-      category: "Teacher Training",
-      location: "Cape Coast, Ghana",
-      title: "Professional Development for Teachers",
-      description: "Support teacher training programs to enhance educational quality and teaching methodologies.",
-      raised: "Raised: $11,300"
-    },
-    {
-      id: "11",
-      image: "/students-happy.jpg",
-      category: "Nutrition Program",
-      location: "Wa, Ghana",
-      title: "School Feeding Program",
-      description: "Provide nutritious meals to students to improve attendance, health, and learning outcomes.",
-      raised: "Raised: $22,100"
-    },
-    {
-      id: "12",
-      image: "/students-happy.jpg",
-      category: "Technology",
-      location: "Techiman, Ghana",
-      title: "Digital Learning Initiative",
-      description: "Introduce tablets and digital learning tools to modernize education and improve student engagement.",
-      raised: "Raised: $16,700"
-    }
-  ];
+  // Filter campaigns based on selected location
+  const filteredCampaigns = selectedLocation === 'All around Ghana' 
+    ? campaigns 
+    : campaigns.filter(campaign => 
+        campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase())
+      );
 
-  const displayedCampaigns = allCampaigns.slice(0, visibleCampaigns);
+  const displayedCampaigns = filteredCampaigns.slice(0, visibleCampaigns);
 
   const loadMoreCampaigns = () => {
-    setVisibleCampaigns(prev => Math.min(prev + 6, allCampaigns.length));
+    setVisibleCampaigns(prev => Math.min(prev + 6, filteredCampaigns.length));
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
+        <Header />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-white text-xl">Loading campaigns...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
+        <Header />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-red-400 text-xl">Error loading campaigns: {error}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
      <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
       <Header />
       
       {/* Header Section with Title and Filter */}
-      <section className="py-16 px-6">
+      <section className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-6 lg:gap-8">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
+              className="flex-1"
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight font-inter-tight">
-                We match every<br />
-                dollar to a School Need
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-4 leading-tight font-inter-tight">
+                We match every<br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>dollar to a School Need
               </h1>
             </motion.div>
             
             <motion.div
-              className="flex items-center"
+              className="flex items-center justify-center lg:justify-end"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <select 
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="bg-transparent border border-gray-600 text-white px-6 py-3 rounded-full appearance-none cursor-pointer hover:border-green-400 transition-colors focus:outline-none focus:border-green-400 min-w-[200px]"
+                  className="bg-transparent border border-gray-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full appearance-none cursor-pointer hover:border-green-400 transition-colors focus:outline-none focus:border-green-400 w-full sm:min-w-[200px] md:min-w-[220px] lg:min-w-[240px] text-sm sm:text-base"
                 >
                   <option value="All around Ghana" className="bg-[#020E05] text-white">All around Ghana</option>
                   <option value="Cape Coast" className="bg-[#020E05] text-white">Cape Coast</option>
@@ -165,8 +88,8 @@ const CampaignsPage: React.FC = () => {
                   <option value="Ho" className="bg-[#020E05] text-white">Ho</option>
                   <option value="Sunyani" className="bg-[#020E05] text-white">Sunyani</option>
                 </select>
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
@@ -177,45 +100,55 @@ const CampaignsPage: React.FC = () => {
       </section>
       
       {/* Campaigns Grid */}
-      <section className="pb-16 px-6">
+      <section className="pb-8 sm:pb-12 md:pb-16 lg:pb-20 xl:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            {displayedCampaigns.map((campaign, index) => (
-              <CampaignCard
-                key={campaign.id}
-                id={campaign.id}
-                image={campaign.image}
-                category={campaign.category}
-                location={campaign.location}
-                title={campaign.title}
-                description={campaign.description}
-                raised={campaign.raised}
-                index={index}
-              />
-            ))}
-          </motion.div>
-
-          {/* Load More Button */}
-          {visibleCampaigns < allCampaigns.length && (
-            <motion.div 
-              className="text-center"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <button 
-                onClick={loadMoreCampaigns}
-                className="bg-green-400 text-white opacity-100 stroke-black px-4 py-2 rounded-full font-semibold hover:bg-green-500 transition-all duration-200 transform hover:scale-105"
+          {filteredCampaigns.length === 0 ? (
+            <div className="text-center text-white py-12">
+              <h3 className="text-xl mb-4">No campaigns found</h3>
+              <p className="text-gray-400">Try selecting a different location or check back later.</p>
+            </div>
+          ) : (
+            <>
+              <motion.div 
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-10 md:mb-12"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
               >
-                Load More
-              </button>
-            </motion.div>
+                {displayedCampaigns.map((campaign, index) => (
+                  <CampaignCard
+                    key={campaign.id}
+                    id={campaign.id}
+                    image={campaign.mediaUrl || '/students-happy.jpg'}
+                    category={campaign.category}
+                    location={campaign.schoolId || 'Unknown Location'}
+                    title={campaign.name}
+                    description={campaign.description}
+                    currentAmount={campaign.amountRaised || 0}
+                    donationTarget={campaign.donationTarget || 1}
+                    index={index}
+                  />
+                ))}
+              </motion.div>
+
+              {/* Load More Button */}
+              {visibleCampaigns < filteredCampaigns.length && (
+                <motion.div 
+                  className="text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <button 
+                    onClick={loadMoreCampaigns}
+                    className="bg-green-400 text-white opacity-100 stroke-black px-6 sm:px-8 md:px-10 lg:px-12 py-2 sm:py-3 md:py-4 rounded-full font-semibold hover:bg-green-500 transition-all duration-200 transform hover:scale-105 text-sm sm:text-base md:text-lg"
+                  >
+                    Load More
+                  </button>
+                </motion.div>
+              )}
+            </>
           )}
         </div>
       </section>

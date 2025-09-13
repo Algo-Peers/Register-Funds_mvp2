@@ -112,14 +112,16 @@ const Overview: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <MapPin className="text-green-400 mt-1" size={16} />
-                      <div>
-                        <p className="text-green-400 text-sm">Cape Coast, Ghana</p>
-                        <h3 className="text-white font-semibold text-lg">
-                          Bisakrom Gyedua D/A Primary School
-                        </h3>
+                  <div className="flex flex-col h-full justify-between">
+                    <div className="space-y-4">
+                      <div className="flex items-start space-x-3">
+                        <MapPin className="text-green-400 mt-1" size={16} />
+                        <div>
+                          <p className="text-green-400 text-sm">Cape Coast, Ghana</p>
+                          <h3 className="text-white font-semibold text-lg">
+                            Bisakrom Gyedua D/A Primary School
+                          </h3>
+                        </div>
                       </div>
                     </div>
 

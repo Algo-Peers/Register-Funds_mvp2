@@ -250,7 +250,7 @@ const Campaigns: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-bold">Drafts & Completed</h2>
-                    <button className="text-green-400 hover:text-green-300 text-sm flex items-center space-x-1">
+                    <button className="text-sm flex items-center space-x-1">
                       <span>View all</span>
                       <ArrowRight size={14} />
                     </button>

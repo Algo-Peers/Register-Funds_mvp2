@@ -9,7 +9,8 @@ interface CampaignCardProps {
   location: string;
   title: string;
   description: string;
-  raised: string;
+  currentAmount: number;
+  donationTarget: number;
   index: number;
 }
 
@@ -20,7 +21,8 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   location,
   title,
   description,
-  raised,
+  currentAmount,
+  donationTarget,
   index
 }) => {
   const navigate = useNavigate();
@@ -29,10 +31,11 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
     navigate(`/campaigns/${id}`);
   };
 
-  // Extract the raised amount and calculate progress (example calculation)
-  const raisedAmount = parseInt(raised.replace(/[^0-9]/g, '')) || 0;
-  const targetAmount = 20000; // Example target amount
-  const progressPercentage = Math.min((raisedAmount / targetAmount) * 100, 100);
+  // Calculate progress percentage
+  const progressPercentage = Math.min((currentAmount / donationTarget) * 100, 100);
+  
+  // Format the raised amount
+  const formattedRaised = `Raised: $${currentAmount.toLocaleString()}`;
 
   return (
     <motion.div
@@ -75,7 +78,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           </div>
         </div>
         
-        <p className="text-white font-semibold">{raised}</p>
+        <p className="text-white font-semibold">{formattedRaised}</p>
       </div>
     </motion.div>
   );

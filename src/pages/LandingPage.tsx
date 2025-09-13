@@ -1,13 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import CampaignCard from '../components/CampaignCard';
 import { ArrowRight, ArrowLeft, MoveRight } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { useCampaigns } from '../hooks';
 
 const LandingPage: React.FC = () => {
   const [selectedLocation, setSelectedLocation] = useState('All around Ghana');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { campaigns, loading, error, refetch } = useCampaigns();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -21,71 +27,11 @@ const LandingPage: React.FC = () => {
     }
   };
 
-  const campaignData = [
-    {
-      id: "1",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "2",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "3",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-    {
-      id: "4",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-      {
-      id: "5",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-      {
-      id: "6",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    },
-      {
-      id: "7",
-      image: "/students-happy.jpg",
-      category: "Basic Computers",
-      location: "Cape Coast, Ghana",
-      title: "Support Christ is King Primary School",
-      description: "Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.",
-      raised: "Raised: $12,000"
-    }
-  ];
+  // Filter campaigns based on selected location
+  const filteredCampaigns = campaigns.filter(campaign => {
+    if (selectedLocation === 'All around Ghana') return true;
+    return campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase());
+  });
 
   const partners = [
     "WikiCharities",
@@ -96,33 +42,33 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
-      <div className="p-10"><Header /></div>
+      <div className="p-4 sm:p-6 md:p-8 lg:p-10"><Header /></div>
       
       
       {/* Hero Section */}
-      <section className="relative xl:max-w-7xl lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
-        <div className="max-w-4xl  mx-auto text-center">
+      <section className="relative w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto bg-[#111C14] py-12 sm:py-16 md:py-20 my-6 sm:my-8 md:my-10 rounded-2xl px-4 sm:px-6">
+        <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto text-center">
           <motion.h1 
-            className="text-4xl md:text-5xl font-bold text-white leading-tight"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Give where it matters, <br />
+            Give where it matters, <br className="hidden sm:block" />
             directly to classrooms left out and under-resourced.         
           </motion.h1>
           
 
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4 pt-16 justify-center"
+            className="flex flex-col sm:flex-row gap-4 pt-8 sm:pt-12 md:pt-16 justify-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <Link to="/campaigns">
-            <button className="flex items-center border gap-4 justify-end border-gray-400 text-white px-6 py-2 rounded-full font-semibold text-lg hover:bg-[#020E05] transition-all duration-200">
+            <button className="flex items-center border gap-2 sm:gap-4 justify-center sm:justify-end border-gray-400 text-white px-4 sm:px-6 py-2 rounded-full font-semibold text-base sm:text-lg hover:bg-[#020E05] transition-all duration-200 w-full sm:w-auto">
               Donate to a Cause      
-              <MoveRight />      
+              <MoveRight className="w-4 h-4 sm:w-5 sm:h-5" />      
             </button>
             </Link>
           </motion.div>
@@ -130,32 +76,32 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Donation Process Section */}
-      <section className="py-10 mb-32 xl:max-w-7xl lg:max-w-4xl mx-auto">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 gap-16">
+      <section className="py-8 sm:py-10 mb-16 sm:mb-24 md:mb-32 w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16">
           <motion.div 
-            className="text-start mb-16"
+            className="text-start mb-8 lg:mb-16 order-2 lg:order-1"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
               Donation on Register Funds is easy, powerful, and trusted            
             </h2>
-            <div className="bg-[#162019] h-full w-full rounded-2xl"> </div>
+            <div className="bg-[#162019] h-48 sm:h-64 md:h-80 lg:h-full w-full rounded-2xl"> </div>
           </motion.div>
           
-          <div className="gap-8">
+          <div className="gap-4 sm:gap-6 md:gap-8 order-1 lg:order-2">
             {[
               {
                 step: "1",
-                title: "Choose a school’s campaign to support.",
-                description: "Select a school or project that resonates with you—whether it’s funding computers, rebuilding a library, or providing school meals."
+                title: "Choose a school's campaign to support.",
+                description: "Select a school or project that resonates with you—whether it's funding computers, rebuilding a library, or providing school meals."
               },
               {
                 step: "2",
                 title: "Donate directly, securely to schools.",
-                description: "Contribute any amount through our safe, transparent platform. Every dollar goes directly to the school’s campaign."
+                description: "Contribute any amount through our safe, transparent platform. Every dollar goes directly to the school's campaign."
               },
               {
                 step: "3",
@@ -165,20 +111,20 @@ const LandingPage: React.FC = () => {
             ].map((item, index) => (
               <motion.div 
                 key={index}
-                className="text-left"
+                className="text-left mb-6 sm:mb-8 last:mb-0"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-start gap-6">
-                  <div className="border text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0">
+                <div className="flex items-start gap-4 sm:gap-6">
+                  <div className="border text-white w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-lg sm:text-xl md:text-2xl font-bold flex-shrink-0">
                     {item.step}
                   </div>
 
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
-                    <p className="text-gray-300 mb-8">{item.description}</p>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2">{item.title}</h3>
+                    <p className="text-gray-300 text-sm sm:text-base">{item.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -188,19 +134,19 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="relative xl:max-w-7xl lg:max-w-4xl mx-auto bg-[#111C14] py-20 my-10 rounded-2xl px-6">
+      <section className="relative w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto bg-[#111C14] py-12 sm:py-16 md:py-20 my-6 sm:my-8 md:my-10 rounded-2xl px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div 
-            className="text-center mb-12"
+            className="text-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-[#3EFF71] opacity-85 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#3EFF71] opacity-85 mb-4 sm:mb-6">
               We are Backed by
             </h2>
-            <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+            <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
               Lorem ipsum dolor sit amet consectetur. Ac lectus urna cras mattis aliquam. Quam tortor facilisi varius molestie 
               ut quam sit euismod maecenas. Sit fringilla porta consequat ante. Vitae elementum pellentesque amet nulla porttitor 
               ut amet diam purus. Cras enim ultricies quis non pulvinar turpis etiam.             
@@ -217,17 +163,17 @@ const LandingPage: React.FC = () => {
             <div className="flex animate-scroll">
               {/* First set of partners */}
               {partners.map((partner, index) => (
-                <div key={index} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#17271C] rounded-full items-center flex p-3 px-6 hover:bg-[#0b140e] transition-colors min-w-[200px]">
-                    <span className="text-white text-2xl font-medium">{partner}</span>
+                <div key={index} className="flex-shrink-0 mx-2 sm:mx-4">
+                  <div className="bg-[#17271C] rounded-full items-center flex p-2 sm:p-3 px-4 sm:px-6 hover:bg-[#0b140e] transition-colors min-w-[120px] sm:min-w-[160px] md:min-w-[200px]">
+                    <span className="text-white text-sm sm:text-lg md:text-2xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {partners.map((partner, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 mx-4">
-                  <div className="bg-[#17271C] rounded-full p-3 px-6 items-center justify-center flex hover:bg-[#0b140e] transition-colors min-w-[200px]">
-                    <span className="text-white text-2xl font-medium">{partner}</span>
+                <div key={`duplicate-${index}`} className="flex-shrink-0 mx-2 sm:mx-4">
+                  <div className="bg-[#17271C] rounded-full p-2 sm:p-3 px-4 sm:px-6 items-center justify-center flex hover:bg-[#0b140e] transition-colors min-w-[120px] sm:min-w-[160px] md:min-w-[200px]">
+                    <span className="text-white text-sm sm:text-lg md:text-2xl font-medium">{partner}</span>
                   </div>
                 </div>
               ))}
@@ -237,31 +183,32 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Campaign Cards Section */}
-      <section className="py-16 px-6 xl:max-w-7xl lg:max-w-4xl mx-auto">
+      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 sm:mb-12 gap-6 lg:gap-0">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
+              className="w-full lg:w-auto"
             >
-              <h2 className="text-4xl font-bold text-white mb-4">
-                We match every <br /> dollar to a School Need
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 sm:mb-6">
+                We match every <br className="hidden sm:block" /> dollar to a School Need
               </h2>
 
 
               <motion.div
-              className="flex items-center"
+              className="flex items-center w-full sm:w-auto"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <div className="relative">
+              <div className="relative w-full sm:w-auto">
                 <select 
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="bg-transparent border border-gray-600 text-white px-16 py-3 justify-between flex rounded-full appearance-none cursor-pointer hover:border-green-400 transition-colors focus:outline-none focus:border-green-400 min-w-[200px]"
+                  className="bg-transparent border border-gray-600 text-white px-8 sm:px-12 md:px-16 py-2 sm:py-3 justify-between flex rounded-full appearance-none cursor-pointer hover:border-green-400 transition-colors focus:outline-none focus:border-green-400 w-full sm:min-w-[200px] md:min-w-[250px] text-sm sm:text-base"
                 >
                   <option value="All around Ghana" className="bg-[#020E05] text-white">All around Ghana</option>
                   <option value="Cape Coast" className="bg-[#020E05] text-white">Cape Coast</option>
@@ -269,8 +216,8 @@ const LandingPage: React.FC = () => {
                   <option value="Kumasi" className="bg-[#020E05] text-white">Kumasi</option>
                   <option value="Tamale" className="bg-[#020E05] text-white">Tamale</option>
                 </select>
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
@@ -280,7 +227,7 @@ const LandingPage: React.FC = () => {
 
             
             <motion.div 
-              className="hidden md:flex gap-4"
+              className="hidden md:flex gap-2 lg:gap-4"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -289,15 +236,15 @@ const LandingPage: React.FC = () => {
               <div className="flex gap-2">
                 <button 
                   onClick={scrollLeft}
-                  className="border text-white p-4 rounded-full hover:bg-[] transition-colors"
+                  className="border text-white p-3 sm:p-4 rounded-full hover:bg-[#040a05] transition-colors"
                 >
-                  <ArrowLeft />
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 <button 
                   onClick={scrollRight}
-                  className="border text-white p-4 rounded-full hover:bg-[#040a05] transition-colors"
+                  className="border text-white p-3 sm:p-4 rounded-full hover:bg-[#040a05] transition-colors"
                 >
-                  <ArrowRight />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               </div>
             </motion.div>
@@ -305,14 +252,46 @@ const LandingPage: React.FC = () => {
           
           <div 
             ref={scrollContainerRef}
-            className="flex gap-8 overflow-x-auto scrollbar-hide pb-4"
+            className="flex gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-hide pb-4"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {campaignData.map((campaign, index) => (
-              <div key={campaign.id} className="flex-shrink-0 w-80">
-                <CampaignCard {...campaign} index={index} />
+            {loading ? (
+              // Loading skeleton
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex-shrink-0 w-72 sm:w-80 md:w-96">
+                  <div className="bg-[#162019] rounded-2xl p-4 animate-pulse">
+                    <div className="bg-gray-700 h-48 rounded-xl mb-4"></div>
+                    <div className="bg-gray-700 h-4 rounded mb-2"></div>
+                    <div className="bg-gray-700 h-4 rounded w-3/4 mb-2"></div>
+                    <div className="bg-gray-700 h-6 rounded w-1/2"></div>
+                  </div>
+                </div>
+              ))
+            ) : error ? (
+              <div className="text-red-400 text-center w-full py-8">
+                Error loading campaigns: {error}
               </div>
-            ))}
+            ) : filteredCampaigns.length === 0 ? (
+              <div className="text-gray-400 text-center w-full py-8">
+                No campaigns found for the selected location.
+              </div>
+            ) : (
+              filteredCampaigns.map((campaign, index) => (
+                <div key={campaign.id} className="flex-shrink-0 w-72 sm:w-80 md:w-96">
+                  <CampaignCard 
+                    id={campaign.id}
+                    image={campaign.mediaUrl || '/students-happy.jpg'}
+                    category={campaign.category}
+                    location={campaign.schoolId || 'Unknown Location'}
+                    title={campaign.name}
+                    description={campaign.description}
+                    currentAmount={campaign.amountRaised || 0}
+                    donationTarget={campaign.donationTarget || 1}
+                    index={index}
+                  />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

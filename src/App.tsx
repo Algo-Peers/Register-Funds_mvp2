@@ -5,10 +5,12 @@ import CampaignsDetails from "./pages/CampaignsDetails";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
 import Overview from "./pages/Schools/Overview"
+import Settings from "./pages/Schools/Settings";
 import Campaigns from "./pages/Schools/Campaigns";
 import CreateCampaign from "./pages/CreateCampaign";
 import SignupSteps from "./components/SignupSteps/SignupSteps";
 import DonatePage from "./pages/DonatePage";
+
 
 
 const App = () => {
@@ -21,6 +23,7 @@ const App = () => {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/overview" element={<Overview />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/campaign" element={<Campaigns />} />
         <Route path="/signup-steps" element={<SignupSteps />} />
         <Route path="/create" element={<CreateCampaign />} />
