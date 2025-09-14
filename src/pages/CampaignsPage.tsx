@@ -16,9 +16,12 @@ const CampaignsPage: React.FC = () => {
   // Filter campaigns based on selected location
   const filteredCampaigns = selectedLocation === 'All around Ghana' 
     ? campaigns 
-    : campaigns.filter(campaign => 
-        campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase())
-      );
+    : campaigns.filter(campaign => {
+        const locationString = campaign.location?.fullLocation || 
+          `${campaign.location?.city}, ${campaign.location?.country}` || 
+          'Unknown Location';
+        return locationString.toLowerCase().includes(selectedLocation.toLowerCase());
+      });
 
   const displayedCampaigns = filteredCampaigns.slice(0, visibleCampaigns);
 
@@ -31,7 +34,15 @@ const CampaignsPage: React.FC = () => {
       <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
         <Header />
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="text-white text-xl">Loading campaigns...</div>
+          {/* <div className="text-white text-xl">Loading campaigns...</div> */}
+
+          <div className="w-44 h-44 mx-auto mb-4 animate-spin">
+            <img 
+              src="/Ripple.svg" 
+              alt="Loading..." 
+              className="w-full h-full"
+            />
+          </div>
         </div>
       </div>
     );
@@ -121,7 +132,7 @@ const CampaignsPage: React.FC = () => {
                     id={campaign.id}
                     image={campaign.mediaUrl || '/students-happy.jpg'}
                     category={campaign.category}
-                    location={campaign.schoolId || 'Unknown Location'}
+                    location={campaign.location}
                     title={campaign.name}
                     description={campaign.description}
                     currentAmount={campaign.amountRaised || 0}
@@ -142,7 +153,7 @@ const CampaignsPage: React.FC = () => {
                 >
                   <button 
                     onClick={loadMoreCampaigns}
-                    className="bg-green-400 text-white opacity-100 stroke-black px-6 sm:px-8 md:px-10 lg:px-12 py-2 sm:py-3 md:py-4 rounded-full font-semibold hover:bg-green-500 transition-all duration-200 transform hover:scale-105 text-sm sm:text-base md:text-lg"
+                    className="bg-[#152C1C] border border-[#485A4D] text-white px-6 sm:px-8 md:px-10 lg:px-12 py-2 sm:py-3 md:py-4 rounded-full font-semibold hover:bg-[#1e251f] transition-all duration-200 transform hover:scale-105 text-sm sm:text-base md:text-lg"
                   >
                     Load More
                   </button>

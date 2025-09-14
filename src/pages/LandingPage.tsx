@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import CampaignCard from '../components/CampaignCard';
@@ -15,35 +15,34 @@ const LandingPage: React.FC = () => {
     refetch();
   }, [refetch]);
 
-  const scrollLeft = () => {
+  // Memoize scroll functions to prevent unnecessary re-renders
+  const scrollLeft = useCallback(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -400, behavior: 'smooth' });
     }
-  };
+  }, []);
 
-  const scrollRight = () => {
+  const scrollRight = useCallback(() => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
     }
-  };
+  }, []);
 
-  // Filter campaigns based on selected location
-  const filteredCampaigns = campaigns.filter(campaign => {
-    if (selectedLocation === 'All around Ghana') return true;
-    return campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase());
-  });
+  // Memoize filtered campaigns to prevent unnecessary recalculations
+  const filteredCampaigns = useMemo(() => {
+    return campaigns.filter(campaign => {
+      if (selectedLocation === 'All around Ghana') return true;
+      return campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase());
+    });
+  }, [campaigns, selectedLocation]);
 
   const partners = [
-    "WikiCharities",
-    "GlobalAffairs Canada",
-    "USAid",
-    "MBC"
+    "WikiCharities", "GlobalAffairs Canada", "USAid", "MBC"
   ];
 
   return (
     <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
       <div className="p-4 sm:p-6 md:p-8 lg:p-10"><Header /></div>
-      
       
       {/* Hero Section */}
       <section className="relative w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl 2xl:max-w-7xl mx-auto bg-[#111C14] py-12 sm:py-16 md:py-20 my-6 sm:my-8 md:my-10 rounded-2xl px-4 sm:px-6">
@@ -58,7 +57,6 @@ const LandingPage: React.FC = () => {
             directly to classrooms left out and under-resourced.         
           </motion.h1>
           
-
           <motion.div 
             className="flex flex-col sm:flex-row gap-4 pt-8 sm:pt-12 md:pt-16 justify-center"
             initial={{ opacity: 0, y: 30 }}
@@ -197,7 +195,6 @@ const LandingPage: React.FC = () => {
                 We match every <br className="hidden sm:block" /> dollar to a School Need
               </h2>
 
-
               <motion.div
               className="flex items-center w-full sm:w-auto"
               initial={{ opacity: 0, x: 30 }}
@@ -225,7 +222,6 @@ const LandingPage: React.FC = () => {
             </motion.div>
             </motion.div>
 
-            
             <motion.div 
               className="hidden md:flex gap-2 lg:gap-4"
               initial={{ opacity: 0, x: 30 }}
@@ -282,7 +278,7 @@ const LandingPage: React.FC = () => {
                     id={campaign.id}
                     image={campaign.mediaUrl || '/students-happy.jpg'}
                     category={campaign.category}
-                    location={campaign.schoolId || 'Unknown Location'}
+                    location={campaign.location}
                     title={campaign.name}
                     description={campaign.description}
                     currentAmount={campaign.amountRaised || 0}

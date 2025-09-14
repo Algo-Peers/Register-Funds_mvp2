@@ -4,16 +4,31 @@ import { db } from '../config/Firebase';
 
 export interface SchoolData {
   id: string;
-  totalStudents: string;
-  studentsGrowth: string;
-  totalTeachers: string;
-  teachersGrowth: string;
-  males: string;
-  females: string;
-  steamInvolved: string;
-  steamNotInvolved: string;
-  updatedAt: Date;
-  userId: string;
+  schoolName: string;
+  city: string;
+  country: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  postalAddress: string;
+  schoolType: string;
+  challenges: string[];
+  students: {
+    male: number;
+    female: number;
+    total: number;
+  };
+  teachers: {
+    steamInvolved: number;
+    nonSteamInvolved: number;
+    total: number;
+  };
+  notificationSettings: {
+    email: boolean;
+    sms: boolean;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UseSchoolDataReturn {
@@ -46,22 +61,37 @@ export const useSchoolData = (userId: string): UseSchoolDataReturn => {
         setSchoolData(data);
       } else {
         // Create default school data if it doesn't exist
-        const defaultData = {
+        const defaultData: Partial<SchoolData> = {
           id: userId,
-          totalStudents: '0',
-          studentsGrowth: '+0%',
-          totalTeachers: '0',
-          teachersGrowth: '+0%',
-          males: '0',
-          females: '0',
-          steamInvolved: '0',
-          steamNotInvolved: '0',
-          userId,
-          updatedAt: new Date(),
+          schoolName: '',
+          city: '',
+          country: '',
+          contactName: '',
+          email: '',
+          phone: '',
+          postalAddress: '',
+          schoolType: '',
+          challenges: [],
+          students: {
+            male: 0,
+            female: 0,
+            total: 0
+          },
+          teachers: {
+            steamInvolved: 0,
+            nonSteamInvolved: 0,
+            total: 0
+          },
+          notificationSettings: {
+            email: true,
+            sms: true
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
         };
         
         await setDoc(schoolDataRef, defaultData);
-        setSchoolData(defaultData);
+        setSchoolData(defaultData as SchoolData);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch school data');
@@ -76,7 +106,7 @@ export const useSchoolData = (userId: string): UseSchoolDataReturn => {
       
       const updateData = {
         ...data,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       };
       
       const schoolDataRef = doc(db, 'schoolData', userId);

@@ -21,7 +21,7 @@ const Header: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <span className="text-3xl font-bold">Register</span>
-          <span className="bg-green-400 px-2 py-1 rounded text-sm font-semibold text-opacity-100">
+          <span className="bg-[#379751] px-2 py-1 rounded text-sm font-semibold text-opacity-100">
             FUNDS
           </span>
         </Link>

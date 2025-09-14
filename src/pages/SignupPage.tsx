@@ -65,7 +65,7 @@ const SignupPage: React.FC = () => {
           >
             <Link to="/signup-steps">
               <motion.button
-                className="bg-[#12311A] text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-[#09190d] transition-all duration-200 flex items-center space-x-3 mx-auto shadow-lg hover:shadow-xl"
+                className="bg-[#12311A] text-white px-8 py-2 rounded-full font-semibold text-lg hover:bg-[#09190d] transition-all duration-200 flex items-center space-x-3 mx-auto shadow-lg hover:shadow-xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
