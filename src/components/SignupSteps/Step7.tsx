@@ -11,20 +11,33 @@ interface Country {
 const countries: Country[] = [
   { code: '+233', name: 'Ghana', flag: '/ghana.svg' },
   { code: '+234', name: 'Nigeria', flag: '/nigeria.jpg' },
-  { code: '+254', name: 'Kenya', flag: '/kenya.svg' },
-  { code: '+27', name: 'South Africa', flag: '/south-africa.svg' },
-  { code: '+1', name: 'United States', flag: '/usa.svg' },
-  { code: '+44', name: 'United Kingdom', flag: '/uk.svg' },
+  { code: '+254', name: 'Kenya', flag: '/kenya.jpeg' },
+  // { code: '+27', name: 'South Africa', flag: '/south-africa.png,' },
+  { code: '+1', name: 'United States', flag: '/usa.png' },
+  { code: '+44', name: 'United Kingdom', flag: '/uk.png' },
 ];
 
-const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => {
+const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress, validationErrors, isLoading }) => {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Dynamic placeholder based on selected country
+  const getPhonePlaceholder = (countryCode: string) => {
+    switch (countryCode) {
+      case '+233': return '24 123 4567';
+      case '+234': return '80 1234 5678';
+      case '+254': return '70 123 4567';
+      case '+27': return '82 123 4567';
+      case '+1': return '555 123 4567';
+      case '+44': return '7700 123456';
+      default: return '123 456 7890';
+    }
+  };
 
   const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
     setIsDropdownOpen(false);
-    // You might want to clear the phone number when country changes
+    // might want to clear the phone number when country changes
     onInputChange('phone', '');
   };
 
@@ -42,11 +55,18 @@ const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             type="email"
             value={formData.email}
             onChange={(e) => onInputChange('email', e.target.value)}
-            className="w-full px-4 py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
+            className={`w-full px-4 py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none ${
+              validationErrors?.email ? 'border-red-500' : ''
+            }`}
             placeholder="john@email.com"
             onKeyPress={onKeyPress}
+            disabled={isLoading}
           />
+          {validationErrors?.email && (
+            <p className="text-red-400 text-sm mt-1">{validationErrors.email}</p>
+          )}
         </div>
+        
         <div className='border-b border-white border-opacity-15'>
           <label className="block text-sm font-medium text-gray-300 mb-2">
             Phone number
@@ -102,14 +122,20 @@ const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             </div>
             
             <input
-              type="text"
+              type="tel"
               value={formData.phone}
               onChange={(e) => onInputChange('phone', e.target.value)}
-              className="flex-1 px-4 py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
-              placeholder="23 374 8472"
-              onKeyDown={onKeyPress}
+              className={`flex-1 px-4 py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none ${
+                validationErrors?.phone ? 'border-red-500' : ''
+              }`}
+              placeholder={getPhonePlaceholder(selectedCountry.code)}
+              onKeyPress={onKeyPress}
+              disabled={isLoading}
             />
           </div>
+          {validationErrors?.phone && (
+            <p className="text-red-400 text-sm mt-1">{validationErrors.phone}</p>
+          )}
         </div>
       </div>
       

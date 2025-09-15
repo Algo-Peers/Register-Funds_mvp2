@@ -13,7 +13,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({ type }) => {
       {/* Logo */}
       <Link to="/" className="flex items-center space-x-2">
         <span className="text-white text-3xl font-bold">Register</span>
-        <span className="bg-[#379751] px-2 py-1 rounded text-sm font-semibold">
+        <span className="bg-[#379751] text-white px-2 py-1 rounded text-sm font-semibold">
           FUNDS
         </span>
       </Link>

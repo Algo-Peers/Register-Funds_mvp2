@@ -17,11 +17,17 @@ export interface FormData {
   saveLogin: boolean;
 }
 
+export interface ValidationErrors {
+  [key: string]: string;
+}
+
 export interface StepProps {
   formData: FormData;
   onInputChange: (field: keyof FormData, value: string | boolean | string[]) => void;
   onNext: () => void;
   onKeyPress?: (e: React.KeyboardEvent) => void;
+  validationErrors?: ValidationErrors;
+  isLoading?: boolean;
 }
 
 export interface NavigationProps {

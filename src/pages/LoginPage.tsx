@@ -39,7 +39,7 @@ const LoginPage: React.FC = () => {
     
     try {
       await login(formData);
-      navigate('/campaigns'); // Navigate to campaigns page after successful login
+      navigate('/overview');
     } catch (error) {
       setLoginError(error instanceof Error ? error.message : 'Login failed');
     } finally {
@@ -146,7 +146,7 @@ const LoginPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="john@email.com"
-                  className="w-full py-4 bg-[#020E05] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
+                  className="w-full py-4 bg-[#020E05] text-white placeholder-gray-500 focus:outline-none"
                   required
                   disabled={isLoading || authLoading}
                 />
@@ -164,7 +164,7 @@ const LoginPage: React.FC = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     placeholder="••••••••"
-                    className="w-full py-4 bg-[#020E05] text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all pr-12"
+                    className="w-full py-4 bg-[#020E05] text-white placeholder-gray-500 focus:outline-none pr-12"
                     required
                     disabled={isLoading || authLoading}
                   />
