@@ -218,7 +218,7 @@ const SignupSteps: React.FC = () => {
       
       // Navigate after a short delay to show success message
       setTimeout(() => {
-        navigate('/campaigns');
+        navigate('/overview');
       }, 1500);
     } catch (error) {
       toast.dismiss(loadingToast);

@@ -84,10 +84,14 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
   // Real-time data fetching with onSnapshot
   useEffect(() => {
     const campaignsRef = collection(db, 'campaigns');
-    let q = query(campaignsRef, orderBy('createdAt', 'desc'));
+    let q;
     
     if (userId) {
-      q = query(campaignsRef, where('schoolId', '==', userId), orderBy('createdAt', 'desc'));
+      // Use only where clause to avoid composite index requirement
+      q = query(campaignsRef, where('schoolId', '==', userId));
+    } else {
+      // For all campaigns, just order by createdAt
+      q = query(campaignsRef, orderBy('createdAt', 'desc'));
     }
     
     const unsubscribe = onSnapshot(
@@ -128,7 +132,12 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
             })
           );
           
-          setCampaigns(campaignsData);
+          // Sort campaigns by createdAt in JavaScript after fetching
+          const sortedCampaigns = campaignsData.sort((a, b) => 
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          
+          setCampaigns(sortedCampaigns);
           setLoading(false);
           setError(null);
         } catch (err) {

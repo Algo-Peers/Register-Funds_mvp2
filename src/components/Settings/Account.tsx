@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { EllipsisVertical } from 'lucide-react';
+import { useAuth } from '../../hooks/useAuth';
+import { useSchoolData } from '../../hooks/useSchoolData';
 import EditModal from './EditModal';
 
 const Account: React.FC = () => {
+  const { user, loading: authLoading } = useAuth();
+  const { schoolData, loading: schoolLoading, updateSchoolData } = useSchoolData(user?.id || '');
+  
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: 'basic' | 'security' | 'staff' | null;
   }>({ isOpen: false, type: null });
 
-  const [accountData, setAccountData] = useState({
-    name: 'Josh Johnson',
-    role: 'Teacher',
-    email: 'bisakromschool@gmail.com',
-    phone: '+233 (555) 000-0000',
-    password: '••••••••',
-    staffId: 'GHS827392',
-    schoolRole: 'Teacher'
-  });
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const openModal = (type: 'basic' | 'security' | 'staff') => {
     setModalState({ isOpen: true, type });
@@ -27,8 +24,29 @@ const Account: React.FC = () => {
     setModalState({ isOpen: false, type: null });
   };
 
-  const handleSave = (data: Record<string, string>) => {
-    setAccountData(prev => ({ ...prev, ...data }));
+  const handleSave = async (data: Record<string, string>) => {
+    try {
+      setIsUpdating(true);
+      
+      if (modalState.type === 'basic') {
+        await updateSchoolData({
+          contactName: data.name,
+          email: data.email,
+          phone: data.phone,
+        });
+      } else if (modalState.type === 'staff') {
+        // Update staff information in school data
+        await updateSchoolData({
+          contactName: data.name || schoolData?.contactName,
+        });
+      }
+      // Note: Password updates would require additional Firebase Auth methods
+      
+    } catch (error) {
+      console.error('Failed to update account data:', error);
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   const getModalConfig = () => {
@@ -37,10 +55,10 @@ const Account: React.FC = () => {
         return {
           title: 'Edit Basic Info',
           fields: [
-            { label: 'Full Name', value: accountData.name, key: 'name' },
-            { label: 'Role', value: accountData.role, key: 'role' },
-            { label: 'Email', value: accountData.email, key: 'email', type: 'email' as const },
-            { label: 'Phone Number', value: accountData.phone, key: 'phone', type: 'tel' as const }
+            { label: 'Full Name', value: schoolData?.contactName || '', key: 'name' },
+            { label: 'Role', value: user?.role || 'Teacher', key: 'role' },
+            { label: 'Email', value: schoolData?.email || user?.email || '', key: 'email', type: 'email' as const },
+            { label: 'Phone Number', value: schoolData?.phone || '', key: 'phone', type: 'tel' as const }
           ]
         };
       case 'security':
@@ -55,14 +73,22 @@ const Account: React.FC = () => {
         return {
           title: 'Edit Staff Information',
           fields: [
-            { label: 'Staff ID', value: accountData.staffId, key: 'staffId' },
-            { label: 'School Role', value: accountData.schoolRole, key: 'schoolRole' }
+            { label: 'Staff ID', value: user?.id || '', key: 'staffId' },
+            { label: 'School Role', value: user?.role || 'Teacher', key: 'schoolRole' }
           ]
         };
       default:
         return { title: '', fields: [] };
     }
   };
+
+  if (authLoading || schoolLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -78,6 +104,7 @@ const Account: React.FC = () => {
           <button 
             onClick={() => openModal('basic')}
             className="text-gray-400 hover:text-white transition-colors"
+            disabled={isUpdating}
           >
             <EllipsisVertical size={18} />
           </button>
@@ -85,22 +112,26 @@ const Account: React.FC = () => {
 
         <div className="flex items-center space-x-6">
           <div className="w-16 h-16 bg-[#2F3931] rounded-full flex items-center justify-center">
-            <span className="text-green-500 font-bold text-xl">{accountData.name.charAt(0)}</span>
+            <span className="text-green-500 font-bold text-xl">
+              {(schoolData?.contactName || user?.name || 'U').charAt(0)}
+            </span>
           </div>
           
           <div className="flex-1">
-            <h3 className="text-white font-semibold text-lg mb-1">{accountData.name}</h3>
-            <p className="text-gray-400">{accountData.role}</p>
+            <h3 className="text-white font-semibold text-lg mb-1">
+              {schoolData?.contactName || user?.name || 'Unknown User'}
+            </h3>
+            <p className="text-gray-400">{user?.role || 'Teacher'}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-8">
             <div>
               <p className="text-green-400 text-sm mb-1">Email</p>
-              <p className="text-white">{accountData.email}</p>
+              <p className="text-white">{schoolData?.email || user?.email || 'No email'}</p>
             </div>
             <div>
               <p className="text-green-400 text-sm mb-1">Phone Number</p>
-              <p className="text-white">{accountData.phone}</p>
+              <p className="text-white">{schoolData?.phone || 'No phone'}</p>
             </div>
           </div>
         </div>
@@ -118,6 +149,7 @@ const Account: React.FC = () => {
           <button 
             onClick={() => openModal('security')}
             className="text-gray-400 hover:text-white transition-colors"
+            disabled={isUpdating}
           >
             <EllipsisVertical size={18} />
           </button>
@@ -125,7 +157,7 @@ const Account: React.FC = () => {
 
         <div>
           <p className="text-green-400 text-sm mb-2">Password</p>
-          <p className="text-white font-mono">{accountData.password}</p>
+          <p className="text-white font-mono">••••••••</p>
         </div>
       </motion.div>
 
@@ -141,6 +173,7 @@ const Account: React.FC = () => {
           <button 
             onClick={() => openModal('staff')}
             className="text-gray-400 hover:text-white transition-colors"
+            disabled={isUpdating}
           >
             <EllipsisVertical size={18} />
           </button>
@@ -149,11 +182,11 @@ const Account: React.FC = () => {
         <div className="grid grid-cols-2 gap-8">
           <div>
             <p className="text-green-400 text-sm mb-2">Staff ID</p>
-            <p className="text-white">{accountData.staffId}</p>
+            <p className="text-white">{user?.id?.substring(0, 8) || 'N/A'}</p>
           </div>
           <div>
             <p className="text-green-400 text-sm mb-2">School Role</p>
-            <p className="text-white">{accountData.schoolRole}</p>
+            <p className="text-white">{user?.role || 'Teacher'}</p>
           </div>
         </div>
       </motion.div>

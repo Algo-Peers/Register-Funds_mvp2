@@ -1,90 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, Loader2 } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
 import CampaignHeader from '../../components/CampaignHeader';
 import { Link, useNavigate } from 'react-router-dom';
-
-interface Campaign {
-  id: number;
-  title: string;
-  location: string;
-  description: string;
-  raised: string;
-  goal?: string;
-  image: string;
-  category: string;
-  status: 'draft' | 'completed' | 'active';
-}
+import { useCampaigns, type Campaign } from '../../hooks/useCampaigns';
+import { useAuth } from '../../hooks/useAuth';
 
 const Campaigns: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { campaigns, loading, error } = useCampaigns(user?.schoolId);
   const [activeTab] = useState<'all' | 'drafts' | 'completed'>('all');
 
-  const campaigns: Campaign[] = [
-    {
-      id: 1,
-      title: 'Support Bisakrom Gyedua D/A Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      goal: '$24,000',
-      raised: '',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'draft'
-    },
-    {
-      id: 2,
-      title: 'Support Bisakrom Gyedua D/A Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      raised: '$24,000',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'completed'
-    },
-    {
-      id: 3,
-      title: 'Support Bisakrom Gyedua D/A Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      raised: '$24,000',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'completed'
-    },
-    {
-      id: 4,
-      title: 'Support Bisakrom Gyedua D/A Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      raised: '$24,000',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'completed'
-    },
-    {
-      id: 5,
-      title: 'Support Christ is King Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      raised: '$12,000',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'active'
-    },
-    {
-      id: 6,
-      title: 'Support Christ is King Primary School',
-      location: 'Cape Coast, Ghana',
-      description: 'Empower students with access to essential digital learning tools and resources that will boost engagement and expand opportunities.',
-      raised: '$12,000',
-      image: '/students-happy.jpg',
-      category: 'Basic Computers',
-      status: 'active'
-    }
-  ];
-
+  // Filter campaigns by status
   const activeCampaigns = campaigns.filter(c => c.status === 'active');
   const draftCampaigns = campaigns.filter(c => c.status === 'draft');
   const completedCampaigns = campaigns.filter(c => c.status === 'completed');
@@ -93,6 +22,15 @@ const Campaigns: React.FC = () => {
     if (activeTab === 'drafts') return draftCampaigns;
     if (activeTab === 'completed') return completedCampaigns;
     return [...draftCampaigns, ...completedCampaigns];
+  };
+
+  const formatCurrency = (amount: number, currency: string = 'USD') => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
   };
 
   const CampaignCard: React.FC<{ campaign: Campaign; index: number }> = ({ campaign, index }) => (
@@ -117,18 +55,21 @@ const Campaigns: React.FC = () => {
                 }`}>
                   {campaign.status === 'draft' ? 'Draft' : campaign.status === 'completed' ? 'Completed' : 'Active'}
                 </span>
-                <span className="bg-[] text-gray-200 px-2 py-1 rounded text-xs">
+                <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs">
                   {campaign.category}
                 </span>
               </div>
               <h3 className="text-white font-semibold text-sm mb-1">
-                {campaign.title}
+                {campaign.name}
               </h3>
             </div>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-green-400 text-sm font-semibold">
-              {campaign.status === 'draft' ? `Goal: ${campaign.goal}` : `Raised: ${campaign.raised}`}
+              {campaign.status === 'draft' 
+                ? `Goal: ${formatCurrency(campaign.goal, campaign.currency)}` 
+                : `Raised: ${formatCurrency(campaign.amountRaised, campaign.currency)}`
+              }
             </span>
           </div>
         </div>
@@ -136,8 +77,44 @@ const Campaigns: React.FC = () => {
     </motion.div>
   );
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col h-screen bg-[#020E05] px-6">
+        <CampaignHeader title="" />
+        <div className="flex flex-1 overflow-hidden bg-[#020E05]">
+          <Sidebar />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="flex items-center space-x-2 text-white">
+              <Loader2 className="animate-spin" size={20} />
+              <span>Loading campaigns...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex flex-col h-screen bg-[#020E05] px-6">
+        <CampaignHeader title="" />
+        <div className="flex flex-1 overflow-hidden bg-[#020E05]">
+          <Sidebar />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-white">
+              <p className="text-red-400 mb-2">Error loading campaigns</p>
+              <p className="text-gray-400 text-sm">{error}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-screen bg-[#020E05]">
+    <div className="flex flex-col h-screen bg-[#020E05] px-6">
       {/* Header at the top */}
       <CampaignHeader title="" />
       
@@ -189,54 +166,80 @@ const Campaigns: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold">Active Campaigns</h2>
-                    <button className="text-sm flex items-center space-x-1">
-                      <span>View all</span>
-                      <ArrowRight size={14} />
-                    </button>
+                    {activeCampaigns.length > 4 && (
+                      <button className="text-sm flex items-center space-x-1">
+                        <span>View all</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    )}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {activeCampaigns.map((campaign, index) => (
-                      <motion.div
-                        key={campaign.id}
-                        className="bg-[#0F1A11] rounded-lg overflow-hidden cursor-pointer hover:bg-gray-650 transition-colors"
-                        onClick={() => navigate(`/campaigns/${campaign.id}`)}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
-                      >
-                        <div className="relative">
-                          <img
-                            src={campaign.image}
-                            alt={campaign.title}
-                            className="w-full h-48 object-cover"
-                          />
-                          <div className="absolute bottom-2 left-2">
-                            <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs">
-                              {campaign.category}
-                            </span>
+                  {activeCampaigns.length === 0 ? (
+                    <div className="bg-[#0F1A11] rounded-lg p-6 text-center">
+                      <p className="text-gray-400 mb-2">No active campaigns yet</p>
+                      <p className="text-gray-500 text-sm">Start your first campaign to begin fundraising</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {activeCampaigns.slice(0, 4).map((campaign, index) => (
+                        <motion.div
+                          key={campaign.id}
+                          className="bg-[#0F1A11] rounded-lg overflow-hidden cursor-pointer hover:bg-gray-650 transition-colors"
+                          onClick={() => navigate(`/campaigns/${campaign.id}`)}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+                        >
+                          <div className="relative">
+                            {campaign.mediaUrl ? (
+                              <img
+                                src={campaign.mediaUrl}
+                                alt={campaign.name}
+                                className="w-full h-48 object-cover"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = '/students-happy.jpg'; // Fallback image
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-48 bg-gray-700 flex items-center justify-center">
+                                <span className="text-gray-400">No image</span>
+                              </div>
+                            )}
+                            <div className="absolute bottom-2 left-2">
+                              <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs">
+                                {campaign.category}
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="p-3">
-                          <div className="flex items-center space-x-1 mb-1">
-                            <MapPin size={12} className="text-green-400" />
-                            <span className="text-green-400 text-xs">{campaign.location}</span>
+                          <div className="p-3">
+                            <div className="flex items-center space-x-1 mb-1">
+                              <MapPin size={12} className="text-green-400" />
+                              <span className="text-green-400 text-xs">
+                                {campaign.location.fullLocation || `${campaign.location.city}, ${campaign.location.country}`}
+                              </span>
+                            </div>
+                            <h3 className="text-white font-semibold text-sm mb-1">
+                              {campaign.name}
+                            </h3>
+                            <p className="text-gray-400 text-xs mb-2 line-clamp-2">
+                              {campaign.description}
+                            </p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-green-400 text-sm font-semibold">
+                                Raised: {formatCurrency(campaign.amountRaised, campaign.currency)}
+                              </span>
+                              {campaign.goal > 0 && (
+                                <span className="text-gray-400 text-xs">
+                                  Goal: {formatCurrency(campaign.goal, campaign.currency)}
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <h3 className="text-white font-semibold text-sm mb-1">
-                            {campaign.title}
-                          </h3>
-                          <p className="text-gray-400 text-xs mb-2 line-clamp-2">
-                            {campaign.description}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-green-400 text-sm font-semibold">
-                              Raised: {campaign.raised}
-                            </span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               </div>
 
@@ -250,17 +253,25 @@ const Campaigns: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold">Drafts & Completed</h2>
-                    <button className="text-sm flex items-center space-x-1">
-                      <span>View all</span>
-                      <ArrowRight size={14} />
-                    </button>
+                    {getDraftsAndCompleted().length > 5 && (
+                      <button className="text-sm flex items-center space-x-1">
+                        <span>View all</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    )}
                   </div>
 
                   {/* Campaign List */}
                   <div className="space-y-3 max-h-full overflow-y-auto scrollbar-hide">
-                    {getDraftsAndCompleted().map((campaign, index) => (
-                      <CampaignCard key={campaign.id} campaign={campaign} index={index} />
-                    ))}
+                    {getDraftsAndCompleted().length === 0 ? (
+                      <div className="bg-[#0F1A12] rounded-xl p-4 text-center">
+                        <p className="text-gray-400 text-sm">No drafts or completed campaigns</p>
+                      </div>
+                    ) : (
+                      getDraftsAndCompleted().map((campaign, index) => (
+                        <CampaignCard key={campaign.id} campaign={campaign} index={index} />
+                      ))
+                    )}
                   </div>
                 </motion.div>
               </div>

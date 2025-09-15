@@ -1,9 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../hooks/useAuth';
+import { useSchoolData } from '../../hooks/useSchoolData';
 
 const Notifications: React.FC = () => {
+  const { user } = useAuth();
+  const { schoolData, loading, updateSchoolData } = useSchoolData(user?.id || '');
+  
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [smsNotifications, setSmsNotifications] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  // Sync with Firebase data
+  useEffect(() => {
+    if (schoolData?.notificationSettings) {
+      setEmailNotifications(schoolData.notificationSettings.email);
+      setSmsNotifications(schoolData.notificationSettings.sms);
+    }
+  }, [schoolData]);
+
+  const handleEmailToggle = async () => {
+    try {
+      setIsUpdating(true);
+      const newValue = !emailNotifications;
+      setEmailNotifications(newValue);
+      
+      await updateSchoolData({
+        notificationSettings: {
+          email: newValue,
+          sms: smsNotifications
+        }
+      });
+    } catch (error) {
+      console.error('Failed to update email notifications:', error);
+      // Revert on error
+      setEmailNotifications(!emailNotifications);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleSmsToggle = async () => {
+    try {
+      setIsUpdating(true);
+      const newValue = !smsNotifications;
+      setSmsNotifications(newValue);
+      
+      await updateSchoolData({
+        notificationSettings: {
+          email: emailNotifications,
+          sms: newValue
+        }
+      });
+    } catch (error) {
+      console.error('Failed to update SMS notifications:', error);
+      // Revert on error
+      setSmsNotifications(!smsNotifications);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -25,10 +89,11 @@ const Notifications: React.FC = () => {
               {emailNotifications ? 'On' : 'Off'}
             </span>
             <button
-              onClick={() => setEmailNotifications(!emailNotifications)}
+              onClick={handleEmailToggle}
+              disabled={isUpdating}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 emailNotifications ? 'bg-green-400' : 'bg-gray-600'
-              }`}
+              } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -58,10 +123,11 @@ const Notifications: React.FC = () => {
               {smsNotifications ? 'On' : 'Off'}
             </span>
             <button
-              onClick={() => setSmsNotifications(!smsNotifications)}
+              onClick={handleSmsToggle}
+              disabled={isUpdating}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                 smsNotifications ? 'bg-green-400' : 'bg-gray-600'
-              }`}
+              } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
