@@ -38,15 +38,15 @@ const Settings: React.FC = () => {
       <CampaignHeader title="" />
       
       {/* Sidebar and Main Content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden px-6">
         {/* Sidebar */}
         <Sidebar />
         
-        <div className="flex-1 p-6 lg:p-8 overflow-y-auto">
+        <div className="flex-1 p-3 lg:p-4 overflow-y-auto">
           <div className="w-full">
             {/* Header and Tab Navigation on same level */}
-            <div className="flex items-end justify-between mb-6">
-              <h1 className="text-3xl lg:text-4xl font-bold text-white">Settings</h1>
+            <div className="flex items-end justify-between mb-3">
+              <h1 className="text-2xl lg:text-3xl font-bold text-white">Settings</h1>
               
               {/* Tab Navigation */}
               <div className="flex space-x-8 border-b border-[#1B261E]">
@@ -54,7 +54,7 @@ const Settings: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`pb-4 px-1 text-sm font-medium transition-colors relative ${
+                    className={`pb-2 px-1 text-sm font-medium transition-colors relative ${
                       activeTab === tab.id
                         ? 'text-green-400 border-b-2 border-green-400'
                         : 'text-gray-400 hover:text-white'
@@ -68,7 +68,7 @@ const Settings: React.FC = () => {
 
             {/* Content */}
             <motion.div
-              className="bg-[#07130A] p-4 rounded-xl"
+              className="bg-[#07130A] p-3 rounded-xl"
               key={activeTab}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -149,27 +149,27 @@ const Campaigns: React.FC = () => {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Content */}
-          <main className="flex-1 overflow-y-auto text-white p-6 bg-[#020E05]">
+          <main className="flex-1 overflow-y-auto text-white p-4 bg-[#020E05]">
             {/* Page Title */}
-            <h1 className="text-2xl font-bold mb-6">Campaigns</h1>
+            <h1 className="text-xl font-bold mb-4">Campaigns</h1>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column - Main Content */}
-              <div className="lg:col-span-2 space-y-8">
+              <div className="lg:col-span-2 space-y-6">
                 {/* Share Your Challenges Section */}
                 <motion.div
-                  className="bg-[#0F1A11] rounded-xl p-6"
+                  className="bg-[#0F1A11] rounded-xl p-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-2xl font-bold mb-2">Share your challenges with donors who care</h2>
-                  <p className="text-gray-400 mb-6">
+                  <h2 className="text-lg font-bold mb-2">Share your challenges with donors who care</h2>
+                  <p className="text-gray-400 mb-4 text-sm">
                     Let donors know what your school is facing—and how they can help.
                   </p>
                   <motion.button
                     onClick={() => navigate('/create')}
-                    className="bg-[#142D1A] hover:bg-[#142D1A] text-white px-8 py-2 rounded-full flex items-center justify-between space-x-2"
+                    className="bg-[#142D1A] hover:bg-[#142D1A] text-white px-6 py-2 rounded-full flex items-center justify-between space-x-2 text-sm"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -182,20 +182,20 @@ const Campaigns: React.FC = () => {
 
                 {/* Active Campaigns */}
                 <motion.div
-                  className="rounded-xl p-6"
+                  className="rounded-xl p-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold">Active Campaigns</h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-bold">Active Campaigns</h2>
                     <button className="text-sm flex items-center space-x-1">
                       <span>View all</span>
                       <ArrowRight size={14} />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {activeCampaigns.map((campaign, index) => (
                       <motion.div
                         key={campaign.id}
@@ -209,7 +209,7 @@ const Campaigns: React.FC = () => {
                           <img
                             src={campaign.image}
                             alt={campaign.title}
-                            className="w-full h-32 object-cover"
+                            className="w-full h-48 object-cover"
                           />
                           <div className="absolute bottom-2 left-2">
                             <span className="bg-gray-600 text-gray-200 px-2 py-1 rounded text-xs">
@@ -217,15 +217,15 @@ const Campaigns: React.FC = () => {
                             </span>
                           </div>
                         </div>
-                        <div className="p-4">
-                          <div className="flex items-center space-x-1 mb-2">
+                        <div className="p-3">
+                          <div className="flex items-center space-x-1 mb-1">
                             <MapPin size={12} className="text-green-400" />
                             <span className="text-green-400 text-xs">{campaign.location}</span>
                           </div>
-                          <h3 className="text-white font-semibold text-sm mb-2">
+                          <h3 className="text-white font-semibold text-sm mb-1">
                             {campaign.title}
                           </h3>
-                          <p className="text-gray-400 text-xs mb-3 line-clamp-2">
+                          <p className="text-gray-400 text-xs mb-2 line-clamp-2">
                             {campaign.description}
                           </p>
                           <div className="flex items-center justify-between">
@@ -248,14 +248,13 @@ const Campaigns: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold">Drafts & Completed</h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-bold">Drafts & Completed</h2>
                     <button className="text-sm flex items-center space-x-1">
                       <span>View all</span>
                       <ArrowRight size={14} />
                     </button>
                   </div>
-
 
                   {/* Campaign List */}
                   <div className="space-y-3 max-h-full overflow-y-auto scrollbar-hide">
