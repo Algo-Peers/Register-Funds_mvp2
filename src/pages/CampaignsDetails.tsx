@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
+import QuickShare from '../components/QuickShare';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, FileDown } from 'lucide-react';
 import { useCampaigns } from '../hooks/useCampaigns';
@@ -156,7 +157,7 @@ const CampaignsDetails: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="mb-8"
+                className="mb-2"
               >
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {campaign.additionalImages.slice(0, 4).map((imageUrl: string, index: number) => (
@@ -179,7 +180,7 @@ const CampaignsDetails: React.FC = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="mb-8 py-8 max-w-xl"
             >
-              <button className="bg-[#112517] rounded-full text-xl font-bold py-3 px-6 mb-4">
+              <button className="bg-[#112517] rounded-full text-xl font-bold py-2 px-4 mb-4">
                 {campaign.category.charAt(0).toUpperCase() + campaign.category.slice(1)}
               </button>
               <div className="text-gray-300 leading-relaxed">
@@ -317,24 +318,24 @@ const CampaignsDetails: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="mb-12"
+              className="mb-8 sm:mb-12"
             >
-              <h3 className="text-xl font-bold text-green-400 mb-6">Organizer</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6">Organizer</h3>
               
-              <div className="flex items-center justify-between mb-4">
-                <div className='flex gap-4'>
-                  <div className="w-14 h-14 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 sm:max-w-xl">
+                <div className='flex items-center gap-3 sm:gap-4'>
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-600 rounded-full flex items-center justify-center text-white text-lg sm:text-xl font-bold flex-shrink-0">
                     {organizerName.charAt(0).toUpperCase()}
                   </div>
-                  <div>
-                    <h4 className="text-white font-semibold">{organizerName}</h4>
-                    <p className="text-gray-400 text-sm">{schoolName}</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-white font-semibold text-sm sm:text-base truncate">{organizerName}</h4>
+                    <p className="text-gray-400 text-xs sm:text-sm">ICT Coordinator</p>
                   </div>
                 </div>
               
-                <button className="bg-[#121F15] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1a2b1f] transition-colors">
+                <button className="bg-[#121F15] text-white px-4 sm:px-6 py-2 rounded-full font-semibold hover:bg-[#1a2b1f] transition-colors flex items-center justify-center gap-2 text-sm sm:text-base w-full sm:w-auto flex-shrink-0">
                   Send Message
-                  <ArrowRight className="inline-block ml-2" size={16} />
+                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
                 </button>
               </div>
             </motion.div>
@@ -344,19 +345,19 @@ const CampaignsDetails: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.9 }}
-              className="mb-12"
+              className="mb-8 sm:mb-12"
             >
-              <div className="pt-4">
-                <h3 className='text-xl font-bold text-green-400 mb-6'>On Behalf of</h3>
-                <h5 className="text-white font-semibold mb-1">{schoolName}</h5>
-                <p className="text-gray-400 text-sm mb-2">{locationDisplay}</p>
-                {schoolData?.schoolType && (
-                  <p className="text-gray-400 text-sm mb-2">{schoolData.schoolType}</p>
-                )}
+              <h3 className='text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6'>on Behalf of</h3>
+              
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 sm:max-w-xl">
+                <div className="min-w-0 flex-1">
+                  <h5 className="text-white font-semibold mb-1 text-sm sm:text-base truncate">{schoolName}</h5>
+                  <p className="text-gray-400 text-xs sm:text-sm">{locationDisplay}</p>
+                </div>
 
-                <button className="bg-[#121F15] text-white px-4 py-2 rounded-full font-semibold mb-4 hover:bg-[#1a2b1f] transition-colors">
+                <button className="bg-[#121F15] text-white px-4 sm:px-6 py-2 rounded-full font-semibold hover:bg-[#1a2b1f] transition-colors flex items-center justify-center gap-2 text-sm sm:text-base w-full sm:w-auto flex-shrink-0">
                   View School Profile
-                  <ArrowRight className="inline-block ml-2" size={16} />
+                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
                 </button>
               </div>
             </motion.div>
@@ -419,7 +420,7 @@ const CampaignsDetails: React.FC = () => {
                   onClick={openShareModal}
                   className="w-full bg-[#132418] text-white py-3 rounded-full font-semibold hover:bg-[#1a3620] transition-colors"
                 >
-                  Share Campaign
+                  Share
                 </button>
               </div>
 
@@ -453,31 +454,16 @@ const CampaignsDetails: React.FC = () => {
         </div>
       </div>
 
-      {/* Share Modal */}
-      {isShareModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={closeShareModal}>
-          <div className="bg-[#1F3B26] rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-xl font-bold text-white mb-4">Share Campaign</h3>
-            <p className="text-gray-300 mb-4">Share this campaign with your friends and family to help reach the goal!</p>
-            <div className="flex gap-2">
-              <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                Facebook
-              </button>
-              <button className="flex-1 bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors">
-                Twitter
-              </button>
-              <button className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                WhatsApp
-              </button>
-            </div>
-            <button 
-              onClick={closeShareModal}
-              className="w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+      {/* QuickShare Modal */}
+      {campaign && (
+        <QuickShare
+          isOpen={isShareModalOpen}
+          onClose={closeShareModal}
+          campaign={{
+            name: campaign.name || 'Campaign',
+            url: window.location.href
+          }}
+        />
       )}
     </div>
   );
