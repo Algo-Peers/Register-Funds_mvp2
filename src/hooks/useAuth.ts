@@ -23,6 +23,10 @@ export interface AuthUser {
   name: string;
   role: string;
   schoolId: string;
+  phone?: string;
+  firstName?: string;
+  lastName?: string;
+  staffId?: string; 
 }
 
 export interface UseAuthReturn {
@@ -60,6 +64,10 @@ export const useAuth = (): UseAuthReturn => {
           name: schoolData.name,
           role: schoolData.role,
           schoolId: firebaseUser.uid,
+          phone: schoolData.phone,
+          firstName: schoolData.firstName,
+          lastName: schoolData.lastName,
+          staffId: schoolData.staffId,
         } as AuthUser;
         
         setUser(userData);
@@ -257,6 +265,10 @@ export const useAuth = (): UseAuthReturn => {
               name: schoolData.name,
               role: schoolData.role,
               schoolId: firebaseUser.uid,
+              phone: schoolData.phone,
+              firstName: schoolData.firstName,
+              lastName: schoolData.lastName,
+              staffId: schoolData.staffId,
             } as AuthUser;
             
             setUser(userData);

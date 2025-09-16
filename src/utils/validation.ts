@@ -115,3 +115,27 @@ export const validateTermsAcceptance = (acceptTerms: boolean): ValidationResult 
   }
   return { isValid: true };
 };
+
+
+// Country code mapping for phone number formatting
+const countryCodeMap: { [key: string]: string } = {
+  'Ghana': '+233',
+  'Nigeria': '+234', 
+  'Kenya': '+254',
+  'South Africa': '+27',
+  'United States': '+1',
+  'United Kingdom': '+44',
+};
+
+export const formatPhoneWithCountryCode = (phone: string, country: string): string => {
+  if (!phone || !country) return phone || 'No phone';
+  
+  const countryCode = countryCodeMap[country];
+  if (!countryCode) return phone;
+  
+  // Remove any existing country code or special characters
+  const cleanPhone = phone.replace(/[\s\-\+\(\)]/g, '').replace(/^233|^234|^254|^27|^1|^44/, '');
+  
+  // Format as: +CountryCode PhoneNumber (without country name)
+  return `${countryCode} ${cleanPhone}`;
+};

@@ -119,6 +119,7 @@ const DonatePage: React.FC = () => {
     <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100 text-white">
       <div className='p-4 sm:p-6 lg:p-10'><Header /></div>
       
+      
       {/* Back Button */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-4">
         <motion.button 

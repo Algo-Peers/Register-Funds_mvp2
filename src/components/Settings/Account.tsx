@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { EllipsisVertical } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useSchoolData } from '../../hooks/useSchoolData';
+import { formatPhoneWithCountryCode } from '../../utils/validation';
 import EditModal from './EditModal';
 
 const Account: React.FC = () => {
@@ -40,7 +41,6 @@ const Account: React.FC = () => {
           contactName: data.name || schoolData?.contactName,
         });
       }
-      // Note: Password updates would require additional Firebase Auth methods
       
     } catch (error) {
       console.error('Failed to update account data:', error);
@@ -131,7 +131,12 @@ const Account: React.FC = () => {
             </div>
             <div>
               <p className="text-green-400 text-sm mb-1">Phone Number</p>
-              <p className="text-white">{schoolData?.phone || 'No phone'}</p>
+              <p className="text-white">
+                {formatPhoneWithCountryCode(
+                  schoolData?.phone || user?.phone || '', 
+                  schoolData?.country || 'Ghana'
+                )}
+              </p>
             </div>
           </div>
         </div>
@@ -182,7 +187,7 @@ const Account: React.FC = () => {
         <div className="grid grid-cols-2 gap-8">
           <div>
             <p className="text-green-400 text-sm mb-2">Staff ID</p>
-            <p className="text-white">{user?.id?.substring(0, 8) || 'N/A'}</p>
+            <p className="text-white">{user?.staffId?.substring(0, 8) || 'N/A'}</p>
           </div>
           <div>
             <p className="text-green-400 text-sm mb-2">School Role</p>
