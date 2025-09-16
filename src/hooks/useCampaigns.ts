@@ -254,9 +254,32 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
       
       if (campaignDoc.exists()) {
         const data = campaignDoc.data();
+        
+        // Fetch school data for location information (same as in main fetch)
+        const schoolData = data.schoolId ? await fetchSchoolData(data.schoolId) : null;
+        
         return {
           id: campaignDoc.id,
-          ...data,
+          name: data.name || data.title || '',
+          description: data.description || '',
+          category: data.category || '',
+          donationTarget: Number(data.donationTarget || 0),
+          amountRaised: Number(data.amountRaised || 0),
+          goal: Number(data.goal || data.donationTarget || 0),
+          status: data.status || 'active',
+          schoolId: data.schoolId || '',
+          mediaUrl: data.mediaUrl || data.image || '',
+          additionalImages: data.additionalImages || [],
+          currency: data.currency || 'USD',
+          location: {
+            city: schoolData?.city || data.location?.city || 'Unknown City',
+            country: schoolData?.country || data.location?.country || 'Unknown Country',
+            fullLocation: schoolData ? `${schoolData.city}, ${schoolData.country}` : (data.location?.fullLocation || `${data.location?.city || 'Unknown'}, ${data.location?.country || 'Location'}`)
+          },
+          schoolName: schoolData?.schoolName || '',
+          featured: data.featured || false,
+          startDate: data.startDate || new Date().toISOString(),
+          endDate: data.endDate || new Date().toISOString(),
           createdAt: data.createdAt?.toDate() || new Date(),
         } as Campaign;
       }

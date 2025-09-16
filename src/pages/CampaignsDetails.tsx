@@ -90,7 +90,7 @@ const CampaignsDetails: React.FC = () => {
   const reports = campaign.reports || [];
 
   const locationDisplay = campaign.location ? 
-    `${campaign.location.city}, ${campaign.location.country}` : 
+    (campaign.location.fullLocation || `${campaign.location.city}, ${campaign.location.country}`) : 
     'Location not specified';
   const progressPercentage = Math.min((campaign.amountRaised / campaign.donationTarget) * 100, 100);
   const donationCount = Math.floor(campaign.amountRaised / 50);
