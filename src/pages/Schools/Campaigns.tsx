@@ -13,10 +13,13 @@ const Campaigns: React.FC = () => {
   const { campaigns, loading, error } = useCampaigns(user?.schoolId);
   const [activeTab] = useState<'all' | 'drafts' | 'completed'>('all');
 
-  // Filter campaigns by status
-  const activeCampaigns = campaigns.filter(c => c.status === 'active');
-  const draftCampaigns = campaigns.filter(c => c.status === 'draft');
-  const completedCampaigns = campaigns.filter(c => c.status === 'completed');
+  // Filter campaigns by status AND current user
+  const userCampaigns = campaigns.filter(c => c.schoolId === user?.schoolId);
+  
+  // Filter user's campaigns by status
+  const activeCampaigns = userCampaigns.filter(c => c.status === 'active');
+  const draftCampaigns = userCampaigns.filter(c => c.status === 'draft');
+  const completedCampaigns = userCampaigns.filter(c => c.status === 'completed');
 
   const getDraftsAndCompleted = () => {
     if (activeTab === 'drafts') return draftCampaigns;
@@ -135,7 +138,7 @@ const Campaigns: React.FC = () => {
               <div className="lg:col-span-2 space-y-6">
                 {/* Share Your Challenges Section */}
                 <motion.div
-                  className="bg-[#0F1A11] rounded-xl p-4"
+                  className="bg-[#0F1A11] rounded-xl p-5"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
@@ -181,7 +184,7 @@ const Campaigns: React.FC = () => {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {activeCampaigns.slice(0, 4).map((campaign, index) => (
+                      {activeCampaigns.slice(0, 2).map((campaign, index) => (
                         <motion.div
                           key={campaign.id}
                           className="bg-[#0F1A11] rounded-lg overflow-hidden cursor-pointer hover:bg-gray-650 transition-colors"

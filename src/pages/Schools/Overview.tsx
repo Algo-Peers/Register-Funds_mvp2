@@ -185,7 +185,7 @@ const Overview: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-lg mb-1">{stat.title}</p>
-                      <p className="text-2xl font-bold text-green-400 mb-1">{stat.value}</p>
+                      <p className="text-3xl font-bold text-green-400 mb-8">{stat.value}</p>
                       <p className={`text-xs ${stat.changeColor}`}>{stat.change}</p>
                     </div>
                   </motion.div>

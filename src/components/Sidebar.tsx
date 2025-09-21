@@ -39,7 +39,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[#0A160D] text-white h-full w-64 rounded-se-3xl flex flex-col overflow-hidden">
+    <div className="bg-[#0A160D] text-white h-screen w-64 rounded-se-3xl flex flex-col overflow-hidden">
       {/* Navigation */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
