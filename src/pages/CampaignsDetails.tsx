@@ -6,6 +6,16 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, FileDown } from 'lucide-react';
 import { useCampaigns } from '../hooks/useCampaigns';
 import { useSchoolData } from '../hooks/useSchoolData';
+import { paymentService } from '../services/paymentService';
+
+// Define DonorInfo interface locally to avoid import issues
+interface DonorInfo {
+  name: string;
+  amount: string;
+  currency: string;
+  date: string;
+  email?: string;
+}
 
 const CampaignsDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +24,9 @@ const CampaignsDetails: React.FC = () => {
   const [campaign, setCampaign] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [actualRaisedAmount, setActualRaisedAmount] = useState<number>(0);
+  const [recentDonors, setRecentDonors] = useState<DonorInfo[]>([]);
+  const [donationCount, setDonationCount] = useState<number>(0);
 
   const { getCampaignById } = useCampaigns();
   const { schoolData } = useSchoolData(campaign?.schoolId || '');
@@ -42,6 +55,17 @@ const CampaignsDetails: React.FC = () => {
         
         if (campaignData) {
           setCampaign(campaignData);
+          
+          // Fetch actual payment data from payments collection
+          const [raisedAmount, donors, donationsCount] = await Promise.all([
+            paymentService.getRaisedAmountByCampaignId(id),
+            paymentService.getRecentDonorsByCampaignId(id, 10),
+            paymentService.getDonationCountByCampaignId(id)
+          ]);
+          
+          setActualRaisedAmount(raisedAmount);
+          setRecentDonors(donors);
+          setDonationCount(donationsCount);
         } else {
           setError('Campaign not found');
         }
@@ -86,16 +110,17 @@ const CampaignsDetails: React.FC = () => {
   }
 
   // Mock data for features not yet implemented in backend - replace with conditional rendering
-  const recentDonors = campaign.donors || [];
   const comments = campaign.comments || [];
   const reports = campaign.reports || [];
 
   const locationDisplay = campaign.location ? 
     (campaign.location.fullLocation || `${campaign.location.city}, ${campaign.location.country}`) : 
     'Location not specified';
-  const progressPercentage = Math.min((campaign.amountRaised / campaign.donationTarget) * 100, 100);
-  const donationCount = Math.floor(campaign.amountRaised / 50);
-  const schoolName = schoolData?.schoolName || campaign.schoolName || 'School Name';
+  
+  // Use actual raised amount from payments collection instead of campaign.amountRaised
+  const currentRaisedAmount = actualRaisedAmount || campaign?.amountRaised || 0;
+  const progressPercentage = Math.min((currentRaisedAmount / campaign?.donationTarget) * 100, 100);
+  const schoolName = schoolData?.schoolName || campaign?.schoolName || 'School Name';
   const organizerName = schoolData?.contactName || 'Campaign Organizer';
 
   return (
@@ -376,7 +401,7 @@ const CampaignsDetails: React.FC = () => {
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <span className="text-2xl font-bold text-white block">
-                      {campaign.currency} {campaign.amountRaised.toLocaleString()} donated
+                      {campaign.currency} {currentRaisedAmount.toLocaleString()} donated
                     </span>
                     <div className="flex items-center gap-4 text-sm text-gray-400 mt-1">
                       <span>{campaign.currency} {campaign.donationTarget.toLocaleString()} Goal</span>
@@ -434,18 +459,24 @@ const CampaignsDetails: React.FC = () => {
                 </div>
 
                 <div className="space-y-4">
-                  {recentDonors.length > 0 ? (
-                    recentDonors.map((donor: any, index: number) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-200 rounded-full" />
+                  {recentDonors && recentDonors.length > 0 ? (
+                    recentDonors.map((donor, index) => (
+                      <div key={`donor-${index}`} className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                          {donor?.name ? donor.name.charAt(0).toUpperCase() : 'A'}
+                        </div>
                         <div>
-                          <div className="font-medium text-white">{donor.name}</div>
-                          <div className="text-sm text-gray-400">{donor.amount}</div>
+                          <div className="font-medium text-white">{donor?.name || 'Anonymous'}</div>
+                          <div className="text-sm text-gray-400 flex items-center gap-2">
+                            <span>{donor?.amount || '$0'}</span>
+                            <span>•</span>
+                            <span>{donor?.date || 'Recently'}</span>
+                          </div>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-400 italic">No donors</p>
+                    <p className="text-gray-400 italic">No donations yet</p>
                   )}
                 </div>
               </div>

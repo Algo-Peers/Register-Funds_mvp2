@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { paymentService } from '../services/paymentService';
 
 interface CampaignCardProps {
   id: string;
@@ -30,12 +31,29 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   index
 }) => {
   const navigate = useNavigate();
+  const [actualRaisedAmount, setActualRaisedAmount] = useState<number>(currentAmount);
 
   const handleCardClick = () => {
     navigate(`/campaigns/${id}`);
   };
 
-  const progressPercentage = Math.min((currentAmount / donationTarget) * 100, 100);
+  // Fetch actual raised amount from payments collection
+  useEffect(() => {
+    const fetchRaisedAmount = async () => {
+      try {
+        const raisedAmount = await paymentService.getRaisedAmountByCampaignId(id);
+        setActualRaisedAmount(raisedAmount || currentAmount);
+      } catch (error) {
+        console.error('Error fetching raised amount for campaign:', id, error);
+        // Keep the original amount if there's an error
+        setActualRaisedAmount(currentAmount);
+      }
+    };
+
+    fetchRaisedAmount();
+  }, [id, currentAmount]);
+
+  const progressPercentage = Math.min((actualRaisedAmount / donationTarget) * 100, 100);
 
   // Improved text truncation for better consistency
   const truncatedTitle = title.length > 45 ? title.substring(0, 60) + '...' : title;
@@ -95,7 +113,7 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
           
           <div className="text-left">
             <span className="text-sm text-white font-medium">
-              Raised: ${currentAmount.toLocaleString()}
+              Raised: ${actualRaisedAmount.toLocaleString()}
             </span>
           </div>
         </div>
