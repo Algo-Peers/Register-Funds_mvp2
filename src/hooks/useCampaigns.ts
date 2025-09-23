@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { collection, doc, addDoc, updateDoc, deleteDoc, getDoc, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '../config/Firebase';
 import type { CampaignData } from '../components/CreateCampaign/types';
-// import { useSchoolData } from './useSchoolData';
 
 export interface Campaign {
   id: string;
@@ -39,20 +38,6 @@ export interface UseCampaignsReturn {
   getCampaignById: (id: string) => Promise<Campaign | null>;
   refetch: () => void;
 }
-
-const convertFileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
-  });
-};
-
-const convertFilesToBase64 = async (files: File[]): Promise<string[]> => {
-  const base64Promises = files.map(file => convertFileToBase64(file));
-  return Promise.all(base64Promises);
-};
 
 export const useCampaigns = (userId?: string): UseCampaignsReturn => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -160,11 +145,6 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
     try {
       setError(null);
       
-      // Convert media files to base64
-      const mediaBase64 = data.media.length > 0 
-        ? await convertFilesToBase64(data.media)
-        : [];
-      
       // Fetch school data for location information
       const schoolData = userId ? await fetchSchoolData(userId) : null;
       
@@ -177,8 +157,8 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
         goal: data.donationTarget,
         status: 'draft' as const,
         schoolId: userId || '',
-        mediaUrl: mediaBase64[0] || '',
-        additionalImages: mediaBase64.slice(1),
+        mediaUrl: '',
+        additionalImages: [],
         currency: 'USD',
         location: {
           city: schoolData?.city || data.location || 'Unknown City',

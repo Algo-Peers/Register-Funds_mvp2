@@ -44,9 +44,9 @@ export default async function handler(
 
     // Create a PaymentIntent with explicit payment method types
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
+      amount: Math.round(amount * 100),
       currency: currency.toLowerCase(),
-      payment_method_types: ['card'], // Explicitly specify card payments
+      payment_method_types: ['card'],
       metadata: {
         campaignId: campaignId || 'unknown',
       },
