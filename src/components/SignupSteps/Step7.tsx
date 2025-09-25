@@ -12,7 +12,6 @@ const countries: Country[] = [
   { code: '+233', name: 'Ghana', flag: '/ghana.svg' },
   { code: '+234', name: 'Nigeria', flag: '/nigeria.jpg' },
   { code: '+254', name: 'Kenya', flag: '/kenya.jpeg' },
-  // { code: '+27', name: 'South Africa', flag: '/south-africa.png,' },
   { code: '+1', name: 'United States', flag: '/usa.png' },
   { code: '+44', name: 'United Kingdom', flag: '/uk.png' },
 ];
@@ -59,7 +58,7 @@ const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress, valid
               validationErrors?.email ? 'border-red-500' : ''
             }`}
             placeholder="john@email.com"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
             disabled={isLoading}
           />
           {validationErrors?.email && (
@@ -129,7 +128,7 @@ const Step7: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress, valid
                 validationErrors?.phone ? 'border-red-500' : ''
               }`}
               placeholder={getPhonePlaceholder(selectedCountry.code)}
-              onKeyPress={onKeyPress}
+              onKeyDown={onKeyPress}
               disabled={isLoading}
             />
           </div>

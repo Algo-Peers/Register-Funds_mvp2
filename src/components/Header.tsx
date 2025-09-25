@@ -1,13 +1,30 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const isActive = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
+
+  const getLinkClassName = (path: string, baseClasses: string = "hover:text-green-400 transition-colors duration-200") => {
+    return isActive(path) 
+      ? `text-green-400 font-semibold ${baseClasses}` 
+      : `text-white ${baseClasses}`;
+  };
+
+  const getButtonClassName = (path: string, activeClasses: string, inactiveClasses: string) => {
+    return isActive(path) ? activeClasses : inactiveClasses;
   };
 
   return (
@@ -28,20 +45,34 @@ const Header: React.FC = () => {
 
         {/* Navigation - Desktop */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="hover:text-green-400 transition-colors duration-200">
+          <Link to="/" className={getLinkClassName('/')}>
             Home
           </Link>
-          <Link to="/campaigns" className="hover:text-green-400 transition-colors duration-200">
+          <Link to="/campaigns" className={getLinkClassName('/campaigns')}>
             Campaigns
           </Link>
-          <Link to="/about" className="hover:text-green-400 transition-colors duration-200">
+          <Link to="/about" className={getLinkClassName('/about')}>
             About Register
           </Link>
 
-          <Link to="/donors" className="border border-[#2A352D] text-white px-4 py-2 rounded-full hover:bg-green-400 hover:text-gray-900 transition-all duration-200">
+          <Link 
+            to="/donate" 
+            className={`border px-4 py-2 rounded-full transition-all duration-200 ${getButtonClassName(
+              '/donate',
+              'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
+              'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
+            )}`}
+          >
             For Donors →
           </Link>
-          <Link to="/signup" className="flex items-center border border-[#314A37] bg-[#379751] bg-opacity-30 text-white px-4 py-2 rounded-full font-semibold hover:bg-[#21442A] transition-all duration-200">
+          <Link 
+            to="/signup" 
+            className={`flex items-center border px-4 py-2 rounded-full font-semibold transition-all duration-200 ${getButtonClassName(
+              '/signup',
+              'border-green-400 bg-green-400 bg-opacity-30 text-green-400',
+              'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
+            )}`}
+          >
             For Schools
             <ArrowRight className="w-4 h-4 ml-2" />
           </Link>
@@ -68,35 +99,43 @@ const Header: React.FC = () => {
           <nav className="flex flex-col space-y-4 pt-4">
             <Link 
               to="/" 
-              className="hover:text-green-400 transition-colors duration-200 px-2 py-1"
+              className={`${getLinkClassName('/')} px-2 py-1`}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link 
               to="/campaigns" 
-              className="hover:text-green-400 transition-colors duration-200 px-2 py-1"
+              className={`${getLinkClassName('/campaigns')} px-2 py-1`}
               onClick={() => setIsMenuOpen(false)}
             >
               Campaigns
             </Link>
             <Link 
               to="/about" 
-              className="hover:text-green-400 transition-colors duration-200 px-2 py-1"
+              className={`${getLinkClassName('/about')} px-2 py-1`}
               onClick={() => setIsMenuOpen(false)}
             >
               About Register
             </Link>
             <Link 
-              to="/donors" 
-              className="border border-[#2A352D] text-white px-4 py-2 rounded-full hover:bg-green-400 hover:text-gray-900 transition-all duration-200 text-center"
+              to="/donate" 
+              className={`border px-4 py-2 rounded-full transition-all duration-200 text-center ${getButtonClassName(
+                '/donate',
+                'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
+                'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
+              )}`}
               onClick={() => setIsMenuOpen(false)}
             >
               For Donors →
             </Link>
             <Link 
               to="/signup" 
-              className="flex items-center justify-center border border-[#314A37] bg-[#379751] bg-opacity-30 text-white px-4 py-2 rounded-full font-semibold hover:bg-[#21442A] transition-all duration-200"
+              className={`flex items-center justify-center border px-4 py-2 rounded-full font-semibold transition-all duration-200 ${getButtonClassName(
+                '/signup',
+                'border-green-400 bg-green-400 bg-opacity-30 text-green-400',
+                'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
+              )}`}
               onClick={() => setIsMenuOpen(false)}
             >
               For Schools

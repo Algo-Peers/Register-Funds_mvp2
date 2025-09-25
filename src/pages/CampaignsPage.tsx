@@ -32,10 +32,9 @@ const CampaignsPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
-        <Header />
-        <div className="flex items-center justify-center min-h-[50vh]">
-          {/* <div className="text-white text-xl">Loading campaigns...</div> */}
+        <div className="p-4 sm:p-6 md:p-8 lg:p-10"><Header /></div>
 
+        <div className="flex items-center justify-center min-h-[50vh]">
           <div className="w-44 h-44 mx-auto mb-4 animate-spin">
             <img 
               src="/Ripple.svg" 
@@ -61,7 +60,7 @@ const CampaignsPage: React.FC = () => {
 
   return (
      <div className="min-h-screen bg-[#020E05] stroke-[#000000] opacity-100">
-      <Header />
+      <div className="p-4 sm:p-6 md:p-8 lg:p-10"><Header /></div>
       
       {/* Header Section with Title and Filter */}
       <section className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8">
@@ -73,7 +72,7 @@ const CampaignsPage: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="flex-1"
             >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white mb-4 leading-tight font-inter-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-4 leading-tight font-inter-tight">
                 We match every<br className="hidden sm:block" />
                 <span className="sm:hidden"> </span>dollar to a School Need
               </h1>

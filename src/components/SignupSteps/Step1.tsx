@@ -18,7 +18,7 @@ const Step1: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             onChange={(e) => onInputChange('schoolName', e.target.value)}
             className="w-full px- py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
             placeholder="Cape Coast DA Primary School"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
           />
         </div>
         <div className='border-b border-white border-opacity-15'>
@@ -31,7 +31,7 @@ const Step1: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             onChange={(e) => onInputChange('country', e.target.value)}
             className="w-full px- py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
             placeholder="Ghana"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
           />
         </div>
         <div className='border-b border-white border-opacity-15'>
@@ -44,7 +44,7 @@ const Step1: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             onChange={(e) => onInputChange('region', e.target.value)}
             className="w-full px- py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
             placeholder="Cape Coast"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
           />
         </div>
       </div>

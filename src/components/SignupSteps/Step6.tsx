@@ -18,7 +18,7 @@ const Step6: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             onChange={(e) => onInputChange('firstName', e.target.value)}
             className="w-full py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
             placeholder="John"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
           />
         </div>
         <div className='border-b border-white border-opacity-15'>
@@ -31,7 +31,7 @@ const Step6: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
             onChange={(e) => onInputChange('lastName', e.target.value)}
             className="w-full py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
             placeholder="Doe"
-            onKeyPress={onKeyPress}
+            onKeyDown={onKeyPress}
           />
         </div>
         <div className='border-b border-white border-opacity-15'>

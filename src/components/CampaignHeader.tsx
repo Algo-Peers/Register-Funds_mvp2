@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { useSchoolProfile } from '../hooks/useSchoolProfile';
 
 interface CampaignHeaderProps {
   title?: string;
@@ -12,6 +14,9 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
   title = 'Overview', 
   className = '' 
 }) => {
+  const { user } = useAuth();
+  const { profile } = useSchoolProfile(user?.id || '');
+
   return (
     <motion.header
       className={`bg-[#020E05] text-white px-6 py-4 ${className}`}
@@ -47,15 +52,6 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
             />
           </div>
 
-          {/* Notifications */}
-          {/* <motion.button
-            className="p-2 rounded-lg bg-[#111C14] transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Bell size={20} className="text-gray-300" />
-          </motion.button> */}
-
           {/* User Profile */}
           <motion.div
             className="flex items-center space-x-2 bg-green-600 rounded-full px-3 py-2 cursor-pointer"
@@ -63,7 +59,9 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
             whileTap={{ scale: 0.95 }}
           >
             <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">J</span>
+              <span className="text-white font-bold text-xl">
+                {(profile?.schoolName || user?.name || 'School').charAt(0)}
+              </span>
             </div>
           </motion.div>
         </div>

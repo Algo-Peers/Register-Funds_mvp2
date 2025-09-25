@@ -253,7 +253,7 @@ const Overview: React.FC = () => {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold">Active Campaigns</h2>
                   <button 
-                    onClick={() => navigate('/campaigns')}
+                    onClick={() => navigate('/active-campaigns')}
                     className="text-white hover:text-green-300 text-sm flex items-center space-x-1"
                   >
                     <span>View all</span>

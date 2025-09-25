@@ -17,7 +17,7 @@ const Step3: React.FC<StepProps> = ({ formData, onInputChange, onKeyPress }) => 
           onChange={(e) => onInputChange('emisCode', e.target.value)}
           className="w-full py-3 bg-[#020E05] text-white placeholder-gray-400 focus:outline-none"
           placeholder="GHS829382"
-          onKeyPress={onKeyPress}
+          onKeyDown={onKeyPress}
         />
       </div>
     </div>

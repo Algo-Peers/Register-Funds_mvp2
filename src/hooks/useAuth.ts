@@ -61,8 +61,8 @@ export const useAuth = (): UseAuthReturn => {
         const userData = {
           id: firebaseUser.uid,
           email: firebaseUser.email || '',
-          name: schoolData.name,
-          role: schoolData.role,
+          name: schoolData.name || `${schoolData.firstName} ${schoolData.lastName}`,
+          role: schoolData.role || 'School Administrator',
           schoolId: firebaseUser.uid,
           phone: schoolData.phone,
           firstName: schoolData.firstName,
@@ -75,9 +75,19 @@ export const useAuth = (): UseAuthReturn => {
       } else {
         throw new Error('School profile not found');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
-      throw err;
+    } catch (err: any) {
+      const errorMessage = err.code === 'auth/user-not-found' 
+        ? 'No account found with this email address'
+        : err.code === 'auth/wrong-password'
+        ? 'Incorrect password'
+        : err.code === 'auth/invalid-email'
+        ? 'Invalid email address'
+        : err.code === 'auth/too-many-requests'
+        ? 'Too many failed attempts. Please try again later'
+        : err.message || 'Login failed';
+      
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -235,6 +245,7 @@ export const useAuth = (): UseAuthReturn => {
     try {
       await signOut(auth);
       setUser(null);
+      setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Logout failed');
       throw err;
@@ -245,16 +256,24 @@ export const useAuth = (): UseAuthReturn => {
     try {
       setError(null);
       await sendPasswordResetEmail(auth, email);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Password reset failed');
-      throw err;
+    } catch (err: any) {
+      const errorMessage = err.code === 'auth/user-not-found'
+        ? 'No account found with this email address'
+        : err.code === 'auth/invalid-email'
+        ? 'Invalid email address'
+        : err.message || 'Password reset failed';
+      
+      setError(errorMessage);
+      throw new Error(errorMessage);
     }
   };
 
+  // Single useEffect for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
       if (firebaseUser) {
         try {
+          // Only check schools collection (consistent with login/register)
           const schoolDoc = await getDoc(doc(db, 'schools', firebaseUser.uid));
           
           if (schoolDoc.exists()) {
@@ -262,8 +281,8 @@ export const useAuth = (): UseAuthReturn => {
             const userData = {
               id: firebaseUser.uid,
               email: firebaseUser.email || '',
-              name: schoolData.name,
-              role: schoolData.role,
+              name: schoolData.name || `${schoolData.firstName} ${schoolData.lastName}`,
+              role: schoolData.role || 'School Administrator',
               schoolId: firebaseUser.uid,
               phone: schoolData.phone,
               firstName: schoolData.firstName,
@@ -272,36 +291,15 @@ export const useAuth = (): UseAuthReturn => {
             } as AuthUser;
             
             setUser(userData);
+          } else {
+            // If no school data found, sign out the user
+            console.warn('No school data found for authenticated user');
+            await signOut(auth);
+            setUser(null);
           }
         } catch (err) {
           console.error('Error fetching school data:', err);
-        }
-      } else {
-        setUser(null);
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
-      if (firebaseUser) {
-        try {
-          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-          
-          if (userDoc.exists()) {
-            const userData = {
-              id: firebaseUser.uid,
-              email: firebaseUser.email || '',
-              ...userDoc.data(),
-            } as AuthUser;
-            
-            setUser(userData);
-          }
-        } catch (err) {
-          console.error('Error fetching user data:', err);
+          setUser(null);
         }
       } else {
         setUser(null);

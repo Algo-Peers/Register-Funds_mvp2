@@ -17,6 +17,7 @@ interface CampaignCardProps {
   currentAmount: number;
   donationTarget: number;
   index: number;
+  onClick?: () => void;
 }
 
 const CampaignCard: React.FC<CampaignCardProps> = ({
@@ -28,13 +29,18 @@ const CampaignCard: React.FC<CampaignCardProps> = ({
   description,
   currentAmount,
   donationTarget,
-  index
+  index,
+  onClick
 }) => {
   const navigate = useNavigate();
   const [actualRaisedAmount, setActualRaisedAmount] = useState<number>(currentAmount);
 
   const handleCardClick = () => {
-    navigate(`/campaigns/${id}`);
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(`/campaigns/${id}`);
+    }
   };
 
   // Fetch actual raised amount from payments collection

@@ -10,6 +10,7 @@ import Campaigns from "./pages/Schools/Campaigns";
 import CreateCampaign from "./pages/CreateCampaign";
 import SignupSteps from "./components/SignupSteps/SignupSteps";
 import DonatePage from "./pages/DonatePage";
+import ActiveCampaigns from "./pages/Schools/ActiveCampaigns";
 
 
 
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/campaigns/:id" element={<CampaignsDetails />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/active-campaigns" element={<ActiveCampaigns />} />
         <Route path="/overview" element={<Overview />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/campaign" element={<Campaigns />} />
