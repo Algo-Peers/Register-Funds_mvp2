@@ -30,7 +30,7 @@ const CampaignHeader: React.FC<CampaignHeaderProps> = ({
           <Link to="/">
             <div className="flex items-center space-x-2">
               <span className="text-white font-bold text-xl">Register</span>
-              <span className="bg-green-400 text-green-900 px-2 py-1 rounded text-sm font-medium">
+              <span className="bg-green-400 text-white px-2 py-1 rounded text-sm font-">
                 FUNDS
               </span>
             </div>

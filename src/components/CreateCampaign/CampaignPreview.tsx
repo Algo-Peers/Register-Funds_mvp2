@@ -8,7 +8,7 @@ interface CampaignPreviewProps {
 
 const CampaignPreview: React.FC<CampaignPreviewProps> = ({ campaignData }) => {
   return (
-    <div className="w-80 lg:w-96 xl:w-80 min-w-[280px] max-w-[400px] bg-[#141D17] p-6 overflow-y-auto h-full flex-shrink-0">
+    <div className="w-80 lg:w-96 xl:w-80 min-w-[280px] max-w-[400px] scrollbar-hide bg-[#141D17] p-6 m-4 rounded-2 overflow-y-auto h-full flex-shrink-0">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-white">Campaign Preview</h3>
         <div className="flex items-center space-x-2">

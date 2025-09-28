@@ -8,7 +8,7 @@ import { useCampaigns } from '../hooks/useCampaigns';
 import { paymentService } from '../services/paymentService';
 import CampaignMainContent from '../components/Campaigns/CampaignMainContent';
 
-// Define DonorInfo interface locally to avoid import issues
+// DonorInfo interface
 interface DonorInfo {
   name: string;
   amount: string;

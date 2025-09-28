@@ -75,7 +75,7 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
       // Use only where clause to avoid composite index requirement
       q = query(campaignsRef, where('schoolId', '==', userId));
     } else {
-      // For all campaigns, just order by createdAt
+      // For all campaigns, order by createdAt
       q = query(campaignsRef, orderBy('createdAt', 'desc'));
     }
     
@@ -117,7 +117,7 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
             })
           );
           
-          // Sort campaigns by createdAt in JavaScript after fetching
+          // Sort campaigns by createdAt
           const sortedCampaigns = campaignsData.sort((a, b) => 
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
@@ -273,7 +273,7 @@ export const useCampaigns = (userId?: string): UseCampaignsReturn => {
   };
 
   const refetch = () => {
-    console.log('Real-time updates are active, manual refetch not needed');
+    // console.log('Real-time updates are active, manual refetch not needed');
   };
 
   return {
