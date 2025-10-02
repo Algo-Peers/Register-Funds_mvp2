@@ -29,6 +29,7 @@ const App = () => {
         <Route path="/campaign" element={<Campaigns />} />
         <Route path="/signup-steps" element={<SignupSteps />} />
         {/* <Route path="/create" element={<CreateCampaign />} /> */}
+        
         <Route path="/donate/:id" element={<DonatePage />}/>
       </Routes>
     </Router>
