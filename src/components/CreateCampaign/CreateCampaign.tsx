@@ -20,7 +20,7 @@ const CreateCampaign: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   
-  const [campaignData] = useState<CampaignData>({
+  const [campaignData, setCampaignData] = useState<CampaignData>({
     title: 'Support Blueacorn Gyeduia DIA Primary School',
     description: 'Lorem ipsum dolor sit amet consectetur. Convallis sed nisl fames iaculis enim. Amet id adipiscing sapibus est euismod. Eget consectetur lacus a congue arcu tincidunt libero sit ac. Ac auctor nunc urna sapien aliquam donec turpis. Aliquam auctor.',
     category: 'Lack of Basic Computers',
@@ -93,12 +93,19 @@ const CreateCampaign: React.FC = () => {
     }
   };
 
+  const handleUploadImage = (file: File) => {
+    const previewUrl = URL.createObjectURL(file);
+    setCampaignData(prev => ({
+      ...prev,
+      media: [...prev.media, { name: file.name, url: previewUrl }]
+    }));
+  };
+
   // Handler functions
 
   const handleTogglePreview = () => {
     setCurrentPage('chat-only');
   };
-
   const handleShowPreview = () => {
     setCurrentPage('full-preview');
   };
@@ -116,6 +123,7 @@ const CreateCampaign: React.FC = () => {
             onInputChange={setInputValue}
             onSendMessage={handleSendMessage}
             onKeyPress={handleKeyPress}
+            onUploadImage={handleUploadImage}
           />
         );
       case 'chat-with-preview':
@@ -125,11 +133,13 @@ const CreateCampaign: React.FC = () => {
             inputValue={inputValue}
             isTyping={isTyping}
             messagesEndRef={messagesEndRef as React.RefObject<HTMLDivElement>}
+            campaignData={campaignData}
             onInputChange={setInputValue}
             onSendMessage={handleSendMessage}
             onKeyPress={handleKeyPress}
-            campaignData={campaignData}
             onTogglePreview={handleTogglePreview}
+            onOpenFullPreview={handleShowPreview}
+            onOpenChatOnly={handleTogglePreview}
           />
         );
       case 'chat-only':
@@ -159,6 +169,7 @@ const CreateCampaign: React.FC = () => {
             onInputChange={setInputValue}
             onSendMessage={handleSendMessage}
             onKeyPress={handleKeyPress}
+            onUploadImage={handleUploadImage}
           />
         );
     }

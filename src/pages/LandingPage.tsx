@@ -30,9 +30,22 @@ const LandingPage: React.FC = () => {
 
   // Memoize filtered campaigns to prevent unnecessary recalculations
   const filteredCampaigns = useMemo(() => {
-    return campaigns.filter(campaign => {
-      if (selectedLocation === 'All around Ghana') return true;
-      return campaign.schoolId?.toLowerCase().includes(selectedLocation.toLowerCase());
+    const normalizedSelected = selectedLocation.trim().toLowerCase();
+    if (normalizedSelected === 'all around ghana') return campaigns;
+
+    return campaigns.filter((campaign) => {
+      const loc = campaign.location as unknown;
+
+      // Safely derive a string location from possible shapes
+      let locationText = '';
+      if (typeof loc === 'string') {
+        locationText = loc;
+      } else if (loc && typeof loc === 'object') {
+        const obj = loc as { city?: string; country?: string; fullLocation?: string };
+        locationText = obj.city || obj.fullLocation || '';
+      }
+
+      return locationText.trim().toLowerCase() === normalizedSelected;
     });
   }, [campaigns, selectedLocation]);
 

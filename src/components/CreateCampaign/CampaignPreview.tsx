@@ -1,19 +1,24 @@
 import React from 'react';
-import { Settings, Share2 } from 'lucide-react';
 import type { CampaignData } from './types';
 
 interface CampaignPreviewProps {
   campaignData: CampaignData;
+  onOpenFullPreview: () => void;
+  onOpenChatOnly: () => void;
 }
 
-const CampaignPreview: React.FC<CampaignPreviewProps> = ({ campaignData }) => {
+const CampaignPreview: React.FC<CampaignPreviewProps> = ({ campaignData, onOpenFullPreview, onOpenChatOnly }) => {
   return (
     <div className="w-80 lg:w-96 xl:w-80 min-w-[280px] max-w-[400px] scrollbar-hide bg-[#141D17] p-6 m-4 rounded-2 overflow-y-auto h-full flex-shrink-0">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-white">Campaign Preview</h3>
         <div className="flex items-center space-x-2">
-          <Settings className="h-4 w-4 text-gray-400" />
-          <Share2 className="h-4 w-4 text-gray-400" />
+          <button className="" onClick={onOpenFullPreview}>
+            <img src="/preview.svg" alt="Open Full Preview" />
+          </button>
+          <button className="" onClick={onOpenChatOnly}>
+            <img src="/chat.svg" alt="Open Chat Only" />
+          </button>
         </div>
       </div>
       
@@ -58,5 +63,4 @@ const CampaignPreview: React.FC<CampaignPreviewProps> = ({ campaignData }) => {
     </div>
   );
 };
-
 export default CampaignPreview;

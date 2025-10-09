@@ -143,13 +143,13 @@ const Campaigns: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-lg font-bold mb-2">Share your challenges with donors who care</h2>
+                  <h2 className="text-2xl font-bold mb-2">Share your challenges with donors who care</h2>
                   <p className="text-gray-400 mb-4 text-sm">
                     Let donors know what your school is facing—and how they can help.
                   </p>
                   <motion.button
                     onClick={() => navigate('/create')}
-                    className="bg-[#142D1A] hover:bg-[#142D1A] text-white px-6 py-2 rounded-full flex items-center justify-between space-x-2 text-sm"
+                    className="bg-[#142D1A] hover:bg-[#142D1A] text-white px-12 py-2 rounded-full flex items-center justify-between space-x-2 text-sm"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -169,12 +169,13 @@ const Campaigns: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold">Active Campaigns</h2>
-                    {activeCampaigns.length > 4 && (
-                      <button className="text-sm flex items-center space-x-1">
-                        <span>View all</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    )}
+                    <button 
+                      onClick={() => navigate('/active-campaigns')}
+                      className="text-sm flex items-center space-x-1 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <span>View all</span>
+                      <ArrowRight size={14} />
+                    </button>
                   </div>
 
                   {activeCampaigns.length === 0 ? (
@@ -256,12 +257,13 @@ const Campaigns: React.FC = () => {
                 >
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold">Drafts & Completed</h2>
-                    {getDraftsAndCompleted().length > 5 && (
-                      <button className="text-sm flex items-center space-x-1">
-                        <span>View all</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    )}
+                    <button 
+                      onClick={() => navigate('/inactive-campaigns')}
+                      className="text-sm flex items-center space-x-1 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <span>View all</span>
+                      <ArrowRight size={14} />
+                    </button>
                   </div>
 
                   {/* Campaign List */}

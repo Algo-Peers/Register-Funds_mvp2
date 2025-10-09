@@ -27,6 +27,27 @@ const Header: React.FC = () => {
     return isActive(path) ? activeClasses : inactiveClasses;
   };
 
+  // Navigation items configuration
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/campaigns', label: 'Campaigns' },
+    { path: '/about', label: 'About Register' }
+  ];
+
+  const buttonItems = [
+    { 
+      path: '/donors', 
+      label: 'For Donors →',
+      className: 'border px-4 py-2 rounded-full transition-all duration-200'
+    },
+    { 
+      path: '/signup', 
+      label: 'For Schools',
+      className: 'flex items-center border px-4 py-2 rounded-full font-semibold transition-all duration-200',
+      hasArrow: true
+    }
+  ];
+
   return (
     <motion.header 
       className="text-white opacity-100 py-4 px-6 top-0 z-50"
@@ -45,37 +66,28 @@ const Header: React.FC = () => {
 
         {/* Navigation - Desktop */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className={getLinkClassName('/')}>
-            Home
-          </Link>
-          <Link to="/campaigns" className={getLinkClassName('/campaigns')}>
-            Campaigns
-          </Link>
-          <Link to="/about" className={getLinkClassName('/about')}>
-            About Register
-          </Link>
+          {navItems.map((item) => (
+            <Link key={item.path} to={item.path} className={getLinkClassName(item.path)}>
+              {item.label}
+            </Link>
+          ))}
 
-          <Link 
-            to="/donate" 
-            className={`border px-4 py-2 rounded-full transition-all duration-200 ${getButtonClassName(
-              '/donate',
-              'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
-              'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
-            )}`}
-          >
-            For Donors →
-          </Link>
-          <Link 
-            to="/signup" 
-            className={`flex items-center border px-4 py-2 rounded-full font-semibold transition-all duration-200 ${getButtonClassName(
-              '/signup',
-              'border-green-400 bg-green-400 bg-opacity-30 text-green-400',
-              'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
-            )}`}
-          >
-            For Schools
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Link>
+          {buttonItems.map((item) => (
+            <Link 
+              key={item.path}
+              to={item.path} 
+              className={`${item.className} ${getButtonClassName(
+                item.path,
+                'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
+                item.path === '/donors' 
+                  ? 'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
+                  : 'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
+              )}`}
+            >
+              {item.label}
+              {item.hasArrow && <ArrowRight className="w-4 h-4 ml-2" />}
+            </Link>
+          ))}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -97,50 +109,34 @@ const Header: React.FC = () => {
           className="md:hidden mt-4 pb-4 border-t border-gray-700"
         >
           <nav className="flex flex-col space-y-4 pt-4">
-            <Link 
-              to="/" 
-              className={`${getLinkClassName('/')} px-2 py-1`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/campaigns" 
-              className={`${getLinkClassName('/campaigns')} px-2 py-1`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Campaigns
-            </Link>
-            <Link 
-              to="/about" 
-              className={`${getLinkClassName('/about')} px-2 py-1`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About Register
-            </Link>
-            <Link 
-              to="/donate" 
-              className={`border px-4 py-2 rounded-full transition-all duration-200 text-center ${getButtonClassName(
-                '/donate',
-                'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
-                'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
-              )}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              For Donors →
-            </Link>
-            <Link 
-              to="/signup" 
-              className={`flex items-center justify-center border px-4 py-2 rounded-full font-semibold transition-all duration-200 ${getButtonClassName(
-                '/signup',
-                'border-green-400 bg-green-400 bg-opacity-30 text-green-400',
-                'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
-              )}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              For Schools
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
+            {navItems.map((item) => (
+              <Link 
+                key={item.path}
+                to={item.path} 
+                className={`${getLinkClassName(item.path)} px-2 py-1`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            {buttonItems.map((item) => (
+              <Link 
+                key={item.path}
+                to={item.path} 
+                className={`${item.className} ${getButtonClassName(
+                  item.path,
+                  'border-green-400 bg-green-400 bg-opacity-20 text-green-400 font-semibold',
+                  item.path === '/donors' 
+                    ? 'border-[#2A352D] text-white hover:bg-green-400 hover:text-gray-900'
+                    : 'border-[#314A37] bg-[#379751] bg-opacity-30 text-white hover:bg-[#21442A]'
+                )} ${item.hasArrow ? 'justify-center' : ''}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+                {item.hasArrow && <ArrowRight className="w-4 h-4 ml-2" />}
+              </Link>
+            ))}
           </nav>
         </motion.div>
       )}

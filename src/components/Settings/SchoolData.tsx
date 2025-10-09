@@ -8,12 +8,12 @@ import EditModal from './EditModal';
 
 const SchoolData: React.FC = () => {
   const { user } = useAuth();
-  const { schoolData, loading, updateSchoolData } = useSchoolData(user?.id || '');
+  const { schoolData, loading, updateSchoolData, refetch } = useSchoolData(user?.id || '');
   const { campaigns } = useCampaigns(user?.id);
   
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
-    type: 'males' | 'females' | 'steam' | 'nonsteam' | 'teachers' | null;
+    type: 'males' | 'females' | 'steam' | 'nonsteam' | 'teachers' | 'students' | null;
   }>({ isOpen: false, type: null });
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -39,7 +39,7 @@ const SchoolData: React.FC = () => {
       ? Math.round(((currentMonthCampaigns - lastMonthCampaigns) / lastMonthCampaigns) * 100)
       : currentMonthCampaigns > 0 ? 100 : 0;
 
-    const teachersGrowth = 5; // Placeholder - could be calculated from teacher data
+    const teachersGrowth = 0; // Placeholder - could be calculated from teacher data
 
     return {
       studentsGrowth: studentsGrowth >= 0 ? `↑ ${studentsGrowth}% vs last month` : `↓ ${Math.abs(studentsGrowth)}% vs last month`,
@@ -47,7 +47,7 @@ const SchoolData: React.FC = () => {
     };
   }, [campaigns]);
 
-  const openModal = (type: 'males' | 'females' | 'steam' | 'nonsteam' | 'teachers') => {
+  const openModal = (type: 'males' | 'females' | 'steam' | 'nonsteam' | 'teachers' | 'students') => {
     setModalState({ isOpen: true, type });
   };
 
@@ -61,29 +61,42 @@ const SchoolData: React.FC = () => {
       
       const updateData: any = {};
       
-      if (modalState.type === 'males') {
+      if (modalState.type === 'students') {
+        const males = parseInt(data.males) || 0;
+        const females = parseInt(data.females) || 0;
         updateData.students = {
           ...schoolData?.students,
-          male: parseInt(data.males) || 0,
-          total: (parseInt(data.males) || 0) + (schoolData?.students?.female || 0)
+          male: males,
+          female: females,
+          total: males + females
+        };
+      } else if (modalState.type === 'males') {
+        const males = parseInt(data.males) || 0;
+        updateData.students = {
+          ...schoolData?.students,
+          male: males,
+          total: males + (schoolData?.students?.female || 0)
         };
       } else if (modalState.type === 'females') {
+        const females = parseInt(data.females) || 0;
         updateData.students = {
           ...schoolData?.students,
-          female: parseInt(data.females) || 0,
-          total: (schoolData?.students?.male || 0) + (parseInt(data.females) || 0)
+          female: females,
+          total: (schoolData?.students?.male || 0) + females
         };
       } else if (modalState.type === 'steam') {
+        const steamInvolved = parseInt(data.steamInvolved) || 0;
         updateData.teachers = {
           ...schoolData?.teachers,
-          steamInvolved: parseInt(data.steamInvolved) || 0,
-          total: (parseInt(data.steamInvolved) || 0) + (schoolData?.teachers?.nonSteamInvolved || 0)
+          steamInvolved,
+          total: steamInvolved + (schoolData?.teachers?.nonSteamInvolved || 0)
         };
       } else if (modalState.type === 'nonsteam') {
+        const nonSteamInvolved = parseInt(data.nonSteamInvolved) || 0;
         updateData.teachers = {
           ...schoolData?.teachers,
-          nonSteamInvolved: parseInt(data.steamNotInvolved) || 0,
-          total: (schoolData?.teachers?.steamInvolved || 0) + (parseInt(data.steamNotInvolved) || 0)
+          nonSteamInvolved,
+          total: (schoolData?.teachers?.steamInvolved || 0) + nonSteamInvolved
         };
       } else if (modalState.type === 'teachers') {
         updateData.teachers = {
@@ -93,6 +106,7 @@ const SchoolData: React.FC = () => {
       }
       
       await updateSchoolData(updateData);
+      await refetch();
     } catch (error) {
       console.error('Failed to update school data:', error);
     } finally {
@@ -100,45 +114,63 @@ const SchoolData: React.FC = () => {
     }
   };
 
-  const getModalConfig = () => {
+  type ModalField = {
+    label: string;
+    value: string;
+    key: string;
+    type?: 'text' | 'email' | 'tel' | 'password' | 'number' | 'textarea';
+    min?: number;
+    max?: number;
+    step?: number;
+    placeholder?: string;
+  };
+  const getModalConfig = (): { title: string; fields: ModalField[] } => {
     switch (modalState.type) {
+      case 'students':
+        return {
+          title: 'Edit Students Data',
+          fields: [
+            { label: 'Number of Male Students', value: schoolData?.students?.male?.toString() || '0', key: 'males', type: 'number', min: 0, step: 1, placeholder: 'Enter male count' },
+            { label: 'Number of Female Students', value: schoolData?.students?.female?.toString() || '0', key: 'females', type: 'number', min: 0, step: 1, placeholder: 'Enter female count' }
+          ]
+        };
       case 'males':
         return {
           title: 'Edit Male Students Data',
           fields: [
-            { label: 'Number of Male Students', value: schoolData?.students?.male?.toString() || '0', key: 'males' }
+            { label: 'Number of Male Students', value: schoolData?.students?.male?.toString() || '0', key: 'males', type: 'number', min: 0, step: 1, placeholder: 'Enter male count' }
           ]
         };
       case 'females':
         return {
           title: 'Edit Female Students Data',
           fields: [
-            { label: 'Number of Female Students', value: schoolData?.students?.female?.toString() || '0', key: 'females' }
+            { label: 'Number of Female Students', value: schoolData?.students?.female?.toString() || '0', key: 'females', type: 'number', min: 0, step: 1, placeholder: 'Enter female count' }
           ]
         };
       case 'steam':
         return {
           title: 'Edit STEAM Involvement Data',
           fields: [
-            { label: 'Teachers Involved in STEAM', value: schoolData?.teachers?.steamInvolved?.toString() || '0', key: 'steamInvolved' }
+            { label: 'Teachers Involved in STEAM', value: schoolData?.teachers?.steamInvolved?.toString() || '0', key: 'steamInvolved', type: 'number', min: 0, step: 1, placeholder: 'Enter number involved' }
           ]
         };
       case 'nonsteam':
         return {
           title: 'Edit Non-STEAM Data',
           fields: [
-            { label: 'Teachers Not Involved in STEAM', value: schoolData?.teachers?.nonSteamInvolved?.toString() || '0', key: 'steamNotInvolved' }
+            { label: 'Teachers Not Involved in STEAM', value: schoolData?.teachers?.nonSteamInvolved?.toString() || '0', key: 'nonSteamInvolved', type: 'number', min: 0, step: 1, placeholder: 'Enter number not involved' }
           ]
         };
       case 'teachers':
         return {
           title: 'Edit Total Teachers',
           fields: [
-            { label: 'Total Number of Teachers', value: schoolData?.teachers?.total?.toString() || '0', key: 'totalTeachers' }
+            { label: 'Total Number of Teachers', value: schoolData?.teachers?.total?.toString() || '0', key: 'totalTeachers', type: 'number', min: 0, step: 1, placeholder: 'Enter total teachers' }
           ]
         };
       default:
-        return { title: '', fields: [] };
+        return { title: '', fields: [] as ModalField[] };
     }
   };
 
@@ -162,7 +194,16 @@ const SchoolData: React.FC = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-white mb-2">Total Students</h2>
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xl font-semibold text-white">Total Students</h2>
+              <button 
+                onClick={() => openModal('students')}
+                className="text-gray-400 hover:text-white transition-colors"
+                disabled={isUpdating}
+              >
+                <EllipsisVertical size={18} />
+              </button>
+            </div>
             <div className="text-4xl font-bold text-green-400 mb-2">
               {schoolData?.students?.total?.toLocaleString() || '0'}
             </div>

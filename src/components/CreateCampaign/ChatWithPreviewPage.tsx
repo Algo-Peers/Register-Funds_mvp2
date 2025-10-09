@@ -1,5 +1,4 @@
 import React from 'react';
-import { Eye } from 'lucide-react';
 import ChatMessages from './ChatMessages';
 import CampaignPreview from './CampaignPreview';
 import type { ChatMessage } from './ChatMessages';
@@ -15,6 +14,8 @@ interface ChatWithPreviewPageProps {
   onSendMessage: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
   onTogglePreview: () => void;
+  onOpenFullPreview: () => void;
+  onOpenChatOnly: () => void;
 }
 
 const ChatWithPreviewPage: React.FC<ChatWithPreviewPageProps> = ({
@@ -26,7 +27,9 @@ const ChatWithPreviewPage: React.FC<ChatWithPreviewPageProps> = ({
   onInputChange,
   onSendMessage,
   onKeyPress,
-  onTogglePreview
+  // onTogglePreview,
+  onOpenFullPreview,
+  onOpenChatOnly
 }) => {
   return (
     <div className="flex-1 flex bg-[#0E2714] min-h-0">
@@ -35,13 +38,6 @@ const ChatWithPreviewPage: React.FC<ChatWithPreviewPageProps> = ({
         {/* Chat Header */}
         <div className="p-4 flex items-center justify-between">
           <span className="text-xl p-3 rounded-xl bg-black bg-opacity-30 font-bold text-green-500">Create a Campaign</span>
-          <button
-            onClick={onTogglePreview}
-            className="flex items-center space-x-2 px-3 py-1 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
-          >
-            <Eye className="h-4 w-4" />
-            <span className="text-sm">Preview</span>
-          </button>
         </div>
         
         <ChatMessages
@@ -56,9 +52,12 @@ const ChatWithPreviewPage: React.FC<ChatWithPreviewPageProps> = ({
       </div>
       
       {/* Preview Sidebar */}
-      <CampaignPreview campaignData={campaignData} />
+      <CampaignPreview
+        campaignData={campaignData}
+        onOpenFullPreview={onOpenFullPreview}
+        onOpenChatOnly={onOpenChatOnly}
+      />
     </div>
   );
 };
-
 export default ChatWithPreviewPage;

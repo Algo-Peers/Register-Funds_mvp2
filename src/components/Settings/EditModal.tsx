@@ -10,7 +10,11 @@ interface EditModalProps {
     label: string;
     value: string;
     key: string;
-    type?: 'text' | 'email' | 'tel' | 'password';
+    type?: 'text' | 'email' | 'tel' | 'password' | 'number' | 'textarea';
+    min?: number;
+    max?: number;
+    step?: number;
+    placeholder?: string;
   }>;
   onSave: (data: Record<string, string>) => Promise<void>;
 }
@@ -100,50 +104,75 @@ const EditModal: React.FC<EditModalProps> = ({ isOpen, onClose, title, fields, o
               )}
 
               {/* Form Fields */}
-              <div className="space-y-4 mb-6">
-                {fields.map((field) => (
-                  <div key={field.key}>
-                    <label className="block text-green-400 text-sm mb-2">
-                      {field.label}
-                    </label>
-                    <input
-                      type={field.type || 'text'}
-                      value={formData[field.key] || ''}
-                      onChange={(e) => handleInputChange(field.key, e.target.value)}
-                      disabled={isLoading}
-                      className="w-full bg-[#07130A] border border-[#1B261E] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-green-400 transition-colors disabled:opacity-50"
-                    />
-                  </div>
-                ))}
-              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!isLoading) handleSave();
+                }}
+              >
+                <div className="space-y-4 mb-6">
+                  {fields.map((field) => (
+                    <div key={field.key}>
+                      <label className="block text-green-400 text-sm mb-2">
+                        {field.label}
+                      </label>
+                      {field.type === 'textarea' ? (
+                        <textarea
+                          value={formData[field.key] || ''}
+                          onChange={(e) => handleInputChange(field.key, e.target.value)}
+                          disabled={isLoading}
+                          placeholder={field.placeholder}
+                          rows={3}
+                          className="w-full bg-[#07130A] border border-[#1B261E] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-green-400 transition-colors disabled:opacity-50"
+                        />
+                      ) : (
+                        <input
+                          type={field.type || 'text'}
+                          value={formData[field.key] || ''}
+                          onChange={(e) => handleInputChange(field.key, e.target.value)}
+                          disabled={isLoading}
+                          placeholder={field.placeholder}
+                          min={field.type === 'number' ? field.min : undefined}
+                          max={field.type === 'number' ? field.max : undefined}
+                          step={field.type === 'number' ? field.step ?? 1 : undefined}
+                          inputMode={field.type === 'number' ? 'numeric' : undefined}
+                          pattern={field.type === 'number' ? '[0-9]*' : undefined}
+                          className="w-full bg-[#07130A] border border-[#1B261E] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-green-400 transition-colors disabled:opacity-50"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
 
-              {/* Actions */}
-              <div className="flex space-x-3">
-                <button
-                  onClick={handleClose}
-                  disabled={isLoading}
-                  className="flex-1 px-4 py-2 border border-[#1B261E] text-gray-400 rounded-lg hover:bg-[#1B261E] transition-colors disabled:opacity-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={isLoading}
-                  className="flex-1 px-4 py-2 bg-green-400 text-black rounded-lg hover:bg-green-500 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" />
-                      <span>Saving...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save size={16} />
-                      <span>Save</span>
-                    </>
-                  )}
-                </button>
-              </div>
+                {/* Actions */}
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-2 border border-[#1B261E] text-gray-400 rounded-lg hover:bg-[#1B261E] transition-colors disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex-1 px-4 py-2 bg-green-400 text-black rounded-lg hover:bg-green-500 transition-colors flex items-center justify-center space-x-2 disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>Updating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} />
+                        <span>Update</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         </>

@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUp, Plus } from 'lucide-react';
 
-
 interface ChatMessage {
   id: string;
   type: 'user' | 'assistant';
@@ -28,7 +27,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
   messagesEndRef,
   fullWidth = false,
   onInputChange,
-  // onSendMessage,
   onKeyPress
 }) => {
   return (
@@ -70,8 +68,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       </div>
       
       {/* Chat Input */}
-
-
         <div className="flex items-center justify-between relative max-w-full mxauto w-full rounded-full bg-[#1B3622] border border-[#384F3E] px-4 my-10 py-2">
           <button className="bg-[#334A39] rounded-full p-2 text-gray-300 hover:text-white">
             <Plus size={20} />
@@ -90,32 +86,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
             <ArrowUp size={16} />
           </button>
         </div>
-
-
-
-
-
-      {/* <div className="p-6 border-t border-gray-700">
-        <div className="flex items-center space-x-4">
-          <div className="flex-1 relative">
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => onInputChange(e.target.value)}
-              onKeyPress={onKeyPress}
-              placeholder="Type something..."
-              className="w-full px-4 py-3 bg-[#0F1A12] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500 pr-12"
-            />
-            <button
-              onClick={onSendMessage}
-              disabled={!inputValue.trim()}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-green-500 hover:text-green-400 disabled:text-gray-500 disabled:cursor-not-allowed"
-            >
-              <Send className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

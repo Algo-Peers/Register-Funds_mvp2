@@ -7,7 +7,6 @@ import { useCampaigns, type Campaign } from '../../hooks/useCampaigns';
 import Sidebar from '../../components/Sidebar';
 import CampaignHeader from '../../components/CampaignHeader';
 import CampaignCard from '../../components/CampaignCard';
-import InactiveCampaigns from './InactiveCampaigns';
 import EditCampaign from '../../components/Campaigns/EditCampaign';
 import Preview from '../../components/Campaigns/Preview';
 
@@ -16,17 +15,14 @@ type ViewState = 'campaigns' | 'preview' | 'edit';
 const ActiveCampaigns: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { campaigns, loading, error, deleteCampaign } = useCampaigns(user?.id);
+  const { campaigns, loading, error } = useCampaigns(user?.id);
   
-  const [activeTab, setActiveTab] = useState<'active' | 'inactive'>('active');
+  const [activeTab] = useState<'active' | 'inactive'>('active');
   const [currentView, setCurrentView] = useState<ViewState>('campaigns');
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
 
   // Filter campaigns by status
   const activeCampaigns = campaigns.filter(campaign => campaign.status === 'active');
-  const inactiveCampaigns = campaigns.filter(campaign => 
-    campaign.status === 'draft' || campaign.status === 'completed'
-  );
 
   const handleBack = () => {
     navigate('/overview');
@@ -45,34 +41,6 @@ const ActiveCampaigns: React.FC = () => {
   const handleEditCampaign = (campaign: Campaign) => {
     setSelectedCampaign(campaign);
     setCurrentView('edit');
-  };
-
-  const handleDeleteCampaign = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this campaign?')) {
-      try {
-        await deleteCampaign(id);
-      } catch (error) {
-        console.error('Error deleting campaign:', error);
-      }
-    }
-  };
-
-  const handleViewCampaign = (campaign: Campaign) => {
-    navigate(`/campaigns/${campaign.id}`);
-  };
-
-  const handleShareCampaign = (campaign: Campaign) => {
-    const shareUrl = `${window.location.origin}/campaigns/${campaign.id}`;
-    if (navigator.share) {
-      navigator.share({
-        title: campaign.name,
-        text: campaign.description,
-        url: shareUrl,
-      });
-    } else {
-      navigator.clipboard.writeText(shareUrl);
-      alert('Campaign link copied to clipboard!');
-    }
   };
 
   const handleSaveCampaign = (updatedCampaign: Campaign) => {
@@ -144,28 +112,9 @@ const ActiveCampaigns: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Tab Navigation */}
-                <div className="flex items-center gap-1 mb-6 bg-[#1C2F21] p-1 rounded-lg w-fit">
-                  <button
-                    onClick={() => setActiveTab('active')}
-                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                      activeTab === 'active'
-                        ? 'bg-green-600 text-white'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Active Campaigns ({activeCampaigns.length})
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('inactive')}
-                    className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                      activeTab === 'inactive'
-                        ? 'bg-green-600 text-white'
-                        : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    Inactive Campaigns ({inactiveCampaigns.length})
-                  </button>
+
+                <div className="text-white text-2xl font-bold py-4">
+                  <h3>Active Campaigns</h3>
                 </div>
 
                 {/* Tab Content */}
@@ -205,14 +154,16 @@ const ActiveCampaigns: React.FC = () => {
                   )}
 
                   {activeTab === 'inactive' && (
-                    <InactiveCampaigns
-                      campaigns={inactiveCampaigns}
-                      onEdit={handleEditCampaign}
-                      onDelete={handleDeleteCampaign}
-                      onView={handleViewCampaign}
-                      onShare={handleShareCampaign}
-                      onPreview={handlePreviewCampaign}
-                    />
+                    <div className="text-center py-12">
+                      <div className="text-gray-400 text-lg mb-4">Inactive campaigns are managed separately</div>
+                      <p className="text-gray-500 mb-6">Visit the Inactive Campaigns page to view and manage draft and completed campaigns</p>
+                      <button
+                        onClick={() => navigate('/inactive-campaigns')}
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors"
+                      >
+                        Go to Inactive Campaigns
+                      </button>
+                    </div>
                   )}
                 </motion.div>
               </>
